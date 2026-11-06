@@ -1,78 +1,127 @@
-# Functional POC implementation record
+# Functional POC: measured native 2048 delivery
 
-Status: implemented locally; native pilot and independent revalidation pending. Date: 2026-11-06.
+Status: bounded local pilot completed. Date: 2026-11-06.
 
-The owner approved a local MCP → MetaGPT-derived planning → native Claude/Codex →
-independent 2048 verification experiment. The chosen execution boundary is structured
-file generation plus fixed isolated tests. Neither model receives coding tools.
+An official MCP SDK client submitted the registered 2048 work item. Three native
+Claude calls elaborated pinned MetaGPT-derived requirements, design and task nodes.
+Native Codex returned four files as JSON. The controller materialized them, ran
+independent offline logic and browser checks, and obtained an independent Claude
+review. The result reached `submitted`; the external coordinator owns canonical
+Task-Spec acceptance and Git integration. A model never accepted its own work.
 
-Delivery route: TASK_SPEC, implemented through native harnesses. Four sealed leaves
-cover boundaries, native adapters, coordinator/MCP and game verification. Advisory
-file-count warnings are retained: each leaf owns one coherent component and its
-discriminating tests; none is an undecomposed product implementation leaf.
+## Successful path
 
-## Evidence recorded so far
+| Observation | Measured result |
+| --- | --- |
+| Planning | Three sequential calls; `claude-sonnet-5-5`; native Claude Code 2.1.318 |
+| Generation | One call, first candidate on the corrected runtime; `gpt-6-sol`, medium effort; native Codex CLI 0.165.0 |
+| Independent game review | `claude-sonnet-5-5`, PASS |
+| Logic | 149 cases passed, including directional merges, single-merge rules, score, spawn, status and conservation |
+| Browser | Keyboard, direction buttons, restart and 360px viewport passed; zero external requests |
+| Planning wall time | 66.52 seconds |
+| Generation, tests and review wall time | 93.53 seconds |
+| Controller suite | 35 discriminating tests, including real PostgreSQL and Linux boundary checks |
+| Existing Phase 0 | All 29 tests remained green |
 
-- Positive atomic materialization and forbidden-path, duplicate and symlink rejection.
-- Real namespace checks with authorized loopback connectivity and a forbidden host
-  endpoint. Removing network isolation makes the negative control fail.
-- Synthetic key exclusion; deliberately mounting the key makes its control fail.
-- Real child process heartbeat stops after the enforced cgroup timeout.
-- PostgreSQL concurrency: eight equal requests create one durable attempt; a new
-  connection returns it, and changed content conflicts.
-- Unknown dispatch remains durable, blocks a second attempt and is not retried.
-- MCP framing, tool discovery, strict arguments and absence of an acceptance tool.
-- A fake game fails the fixed evaluator.
+The 160.05-second successful native path excludes cold implementation, prior failed
+runs, independent controller reviews, integration and final acceptance. It is not a
+productivity comparison. Provider token totals were not retained by these initial
+adapters; they remain unknown. API list-price estimates are not subscription charges.
 
-These checks alone do not establish a successful native game generation. Native
-results, independent review, acceptance and resource disposition will be recorded
-after those operations actually complete.
+Model routing: the game is one M leaf on the house's provisional standard-tier
+mapping (`gpt-6-sol`, medium). Planning and adversarial review use the Sonnet
+coordinator tier. No tool-capable implementation worker or extra integration front
+was launched; all model calls produced data only. Peak model-call concurrency was one.
 
-The first native Sonnet review returned CORRECT with one high finding (generated
-logic sharing the verifier process) and narrower robustness findings. Corrections
-now separate candidate execution from assertions, cap output while reading it,
-fix dispatch/replay races, pin upstream inputs and verifier bytes, validate native
-configuration, and preserve admission reasons. These corrections passed 31 local
-tests but have not received a second independent review.
+## Failure that changed the implementation
 
-An official Python MCP SDK 1.26.0 client successfully initialized and discovered
-all five tools. The simulated provider flow reaches submitted with pending external
-acceptance. Simulation is not evidence of native game generation.
+The first native pipeline generated valid game logic twice: both candidates passed
+149 logic cases. Chromium failed before opening a page, and the original loop spent
+its one correction round on that infrastructure failure. That attempt remained
+`blocked / CORRECTION_LIMIT`; it was not relabeled successful.
 
-A real SDK → stdio facade → systemd worker → PostgreSQL negative roundtrip also
-finished `blocked / QUOTA_MISSING_WINDOW` with zero admitted native invocations.
-That integration exposed the SDK's filtered environment: the controller now restores
-the verified local user-systemd bus instead of relying on inherited bus variables.
+Resource controls isolated the fault:
 
-The next Claude call was blocked at the configured 35% short-window admission
-threshold. No exception was inferred from earlier owner-authorized calls.
-The native pilot must wait for renewed capacity or a separately bounded owner exception.
+| Browser task cap | Memory cap | Observation |
+| --- | --- | --- |
+| 64 | 768 MB | Browser failed before page creation |
+| 64 | 1 GB | Browser still failed |
+| 256 | 768 MB | Same candidate passed the full browser checks |
 
-## Deliberate limits
+The browser now receives a bounded 256-task cgroup. Other calls keep the 64-task
+default. A pinned-harness browser positive control runs before any generation call,
+so this failure cannot silently consume another code correction round. Per-revision
+verification reports are retained. A fresh, explicitly requested MCP attempt then
+completed the full path; no ambiguous attempt was automatically retried.
 
-Native official CLIs are trusted and use host networking for provider transport.
-This is not provider-only egress certification or support for model shell tools.
-Generated code runs in a separate offline namespace without credentials. The
-upstream runtime and package identifiers remain unchanged.
+The first controller review returned CORRECT. Fixes separated candidate execution
+from the assertion/reporting process, capped output during reads, fixed launch and
+replay races, pinned upstream/harness bytes and verified effective native settings.
+Native Sonnet revalidation returned PASS. A second focused review of the browser
+resource/preflight correction also returned PASS; its hash-binding suggestion was
+implemented and covered by a negative control.
 
-Task-Spec remains the contract and acceptance authority. PostgreSQL stores attempts,
-reservations and observation events, not another canonical organizational backlog.
-Task-Spec HMAC proves contract integrity, not model authorship or semantic quality.
+## Boundary and recovery evidence
 
-The POC supports one local user, one active attempt and one registered template.
-Paperclip and Quadrant are future integrations, not operational dependencies.
-Infrastructure used during verification is task-owned and disposable; a durable
-service deployment requires a separate infrastructure contract.
+- Atomic four-file materialization succeeds. Traversal, absolute paths, duplicate
+  paths, symlinks, malformed JSON and surrogate encoding are rejected before writes.
+- An isolated loopback connection succeeds while a known host endpoint is denied.
+  Removing network isolation makes that negative control fail.
+- A synthetic key is absent. Deliberately mounting it makes the control fail.
+- Timeouts and out-of-band parent cancellation terminate descendants, including a
+  double-forked child. Output flooding is stopped while reading.
+- Eight concurrent PostgreSQL requests create one durable attempt. New connections
+  recover it; changed payloads conflict. Unknown dispatch blocks another attempt.
+- Official MCP SDK 1.26.0 initialization and all five tools worked. A real negative
+  facade → systemd worker → PostgreSQL roundtrip blocked missing quota with zero
+  admitted native calls. The filtered SDK environment exposed a user-bus dependency,
+  which is now reconstructed and independently tested.
+- A generated module that prints a forged success and exits cannot forge the real
+  verifier report. The direct-import mutant reproduces the original vulnerability.
+- Missing auth, unexpected models, stale quota, changed harness bytes and unexpected
+  tool events fail closed. Native subscription modes and effective model IDs are
+  recorded privately without credential values.
 
-See [reproduction and operation](../../../experiments/poc/README.md).
+## Authority, integrity and provenance
 
-## Current handoff and resources
+The phase-zero gate validates a coordinator-built fixed contract envelope. It does
+not certify the semantic quality of model-produced planning. Planning has a separate
+closed schema and remains advisory. A deterministic wire alias bridges Phase 0's
+synthetic identifier vocabulary; the canonical Task-Spec ID remains authoritative.
 
-Implementation is retained on `experiment/functional-poc` without a merge or
-Task-Spec acceptance stamp. The native game and browser positive path have not run.
-The signing key and account files stay private; no model has received the host checkout.
-One task-owned ephemeral PostgreSQL container and local test dependencies are
-retained for immediate correction and pilot continuation. No model worker is kept
-running while quota admission is blocked. The run and test databases are separate.
-Peak native review concurrency for this implementation was one. No durable
-infrastructure deployment, public preview, or new scheduled model run was installed.
+HMAC verifies the contract, not writer identity, semantic quality or isolation.
+Component acceptance uses fresh validation handoffs and baseline-discriminating evals.
+The coordinator separately audited every changed path against the original
+`6a892958276ea900a36d9ae2cd83df65515ec3da` baseline; refreshed handoffs do not erase
+that original scope audit. No acceptance gate is skipped or downgraded.
+
+Native CLI credentials are mounted only into trusted, tool-free provider processes.
+Those processes use host networking for provider transport; provider-only egress is
+not certified. Generated code executes in a different offline namespace without
+subscription files, database credentials, signing keys or a host checkout. The Node
+VM is an extra separation mechanism, not the OS security boundary.
+
+Raw provider inputs/outputs, account observations and local inventories stay private.
+Public evidence includes the generated bytes, deterministic tests and canonical
+acceptance receipts. Reproducing HMAC Tier 1 requires the owner's private key.
+
+## Operational limits and rollback
+
+This supports one local user, one active attempt and one registered 2048 template.
+Paperclip and Quadrant integration, arbitrary projects, tool-capable workers,
+organization management and production deployment remain outside the demonstrated
+scope. Upstream MetaGPT runtime, package identifiers, dependencies, attribution and
+license remain unchanged.
+
+A private, expiring owner exception authorized this pilot beyond the default 35%
+admission threshold. It does not change house policy or override stale quota,
+provider exhaustion, memory/disk floors or integrating-worker limits. An expired
+exception blocks new model calls.
+
+The task-owned PostgreSQL instance is disposable and separates run/test databases.
+Local Python/browser dependencies and private audit evidence are retained for
+reproduction. No production resource, public preview or scheduled model run is
+installed. Disable the optional MCP entry, reconcile active attempts, and revert
+this PR to return to the existing coordinator/harness route.
+
+See [operation and reproduction](../../../experiments/poc/README.md).

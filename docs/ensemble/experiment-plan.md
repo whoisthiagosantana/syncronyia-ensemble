@@ -2,8 +2,8 @@
 
 Status: Phase 0 accepted for its bounded offline scope after independent review conditions
 and Task-Spec Tier 1 acceptance.
-The bounded functional POC is being implemented separately; the real game pilot
-has not run. See [the current record](reports/functional-poc.md).
+The separate bounded functional POC completed the real two-provider 2048 pilot.
+The broader tool-capable executor and reliability phases remain unverified. See [the current record](reports/functional-poc.md).
 Original plan date: 2026-11-05.
 The owner authorized starting this experiment. See [Phase 0 results](reports/phase0.md).
 That authorization does not waive native-execution readiness or acceptance controls.

@@ -1,6 +1,6 @@
 # Functional POC: local 2048 delivery
 
-This is a single-user, single-template experiment. It compiles declarative product,
+This is a single-user, single-template experiment with a completed native 2048 pilot. It compiles declarative product,
 design and task nodes from the pinned MetaGPT source using Python AST, without
 importing its roles, providers, decorators or tool registry. Three native Claude
 calls elaborate those instructions; native Codex produces a JSON file bundle.
@@ -43,12 +43,20 @@ windows are `five_hour` and `seven_day`. Codex obtains quota through its native
 App Server and requires `required_quota_windows` in configuration. Set this only
 from the actual account's reported windows, not an assumption about every plan.
 The pilot account reports only `seven_day`; absence of a required window blocks.
-Both providers require readings below 35%, at most 300 seconds old, with future resets.
+Both providers normally require readings below 35%, at most 300 seconds old, with future resets.
+An explicit owner exception may be recorded only in the private controller configuration
+as `owner_quota_exception`, with `scope: functional_poc`, `authorized_by: owner`,
+`expires_at`, and `limit_percent` (1–100). An expired exception blocks. This does not
+alter house policy, make stale/unknown quota admissible, or override provider exhaustion.
 
 A capacity probe returns `observed_at`, `live_workers`, and `worker_limit`. The local
 house integration is `python -m ensemble_poc.admission <infra_hub path>`; it reads
 canonical window settings and Orca's all-run worker counts. Failure to observe
 global capacity blocks the native invocation. Memory and free disk are also checked.
+The native adapters have the fixed `tool_free_data_producer` profile: they observe
+integrating-worker counts but cannot consume a writing/integration slot, because
+they have no checkout, tools or write capability. A future integrating worker must
+use the stricter default profile and satisfy the worker-slot limit.
 
 Pin the three acceptance harness file hashes in `acceptance_sha256`; any change
 blocks verification. The upstream planning source hashes are pinned in code.
@@ -108,11 +116,15 @@ It is development-only and does not publish the game.
   recovery silently launches another model call.
 - `cancel <attempt UUID>` confirms worker termination. `reconcile <attempt UUID>`
   closes an `unknown` attempt only after its unit is inactive; it never relaunches.
+- A pinned-harness browser positive control runs before generation, with a measured
+  256-task browser cgroup (other calls retain 64). It catches browser runtime failure
+  before a model is asked to correct valid code.
 - One correction round is allowed, with fresh admission. Every new model call is
   checked, including planning and review. Unknown or exceeded quota stops the run.
 
 Activate the virtualenv and set `ENSEMBLE_TEST_DSN` privately to the disposable test
-database before running `python -m unittest discover -s poc_tests -v`. The suite
+database and `ENSEMBLE_TEST_CONFIG` to the private browser runtime configuration
+before running `python -m unittest discover -s poc_tests -v`. The suite
 must fail if PostgreSQL is missing. Keep raw provider outputs and account details
 out of public evidence.
 

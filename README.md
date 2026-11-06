@@ -2,12 +2,14 @@
 
 **Experimental MetaGPT fork for governed AI software delivery.**
 
-Status: **research / functional POC implementation under validation**. The accepted
-[offline Phase 0](experiments/phase0/README.md) remains unchanged. A bounded local
-[MCP and native data-generation POC](experiments/poc/README.md) now exists separately
-under `ensemble_poc/`. Its local tests pass; the real two-provider 2048 pilot and
-independent revalidation are still pending. See the [implementation record](docs/ensemble/reports/functional-poc.md).
-This is not readiness for tool-capable native agents or autonomous company operation.
+Status: **experimental / bounded local 2048 POC demonstrated**. The accepted
+[offline Phase 0](experiments/phase0/README.md) remains unchanged. The separate
+[MCP and native data-generation POC](experiments/poc/README.md) completed a real
+Claude planning → Codex generation → isolated logic/browser checks → Claude review
+roundtrip. The [generated game](examples/ensemble-2048/index.html) uses four static files.
+See the [measured results and limits](docs/ensemble/reports/functional-poc.md).
+This demonstrates the fixed local template; tool-capable agents and autonomous company
+operation remain unverified.
 The Python runtime and dependencies remain upstream MetaGPT at
 [`11cdf466`](https://github.com/FoundationAgents/MetaGPT/tree/11cdf466d042aece04fc6cfd13b28e1a70341b1f).
 Running the upstream company can invoke executable tools and API-backed models.
@@ -34,9 +36,9 @@ Internal role messages and completion fields do not authorize work or certify de
 | [Astra advisory](docs/ensemble/reviews/2026-11-05-astra-advisory.md) | Reviewed recommendations, corrections and evidence limits. |
 | [Upstream provenance](docs/ensemble/upstream.md) | Baseline, license, fork scope, validation and rollback. |
 
-The offline fixture experiment and local POC controls have run; the model-driven game pilot has not. See the
+The offline fixture experiment, local POC controls and real two-provider game pilot have run. See the
 [Phase 0 report](docs/ensemble/reports/phase0.md) for measured results and remaining gates.
-No productivity, native-auth or MCP readiness claim is made. Subscription execution still consumes tokens and plan quota. Provider login stays
+No productivity advantage or general-purpose factory readiness claim is made. Subscription execution still consumes tokens and plan quota. Provider login stays
 inside official executors; this fork does not provide a shared subscription API.
 
 ## What exists today
@@ -46,9 +48,9 @@ inside official executors; this fork does not provide a shared subscription API.
 - A bounded experiment design that can fail without migrating company state.
 - An offline proposal validator with synthetic cases, targeted mutations and local results.
 - A separate local MCP facade, PostgreSQL attempt ledger, native data-only adapters
-  and fixed offline verification harness, awaiting the real game pilot.
+  and fixed offline verification harness with a measured native game pilot.
 
-No factory is installed or adopted by creating this repository. GitHub Actions is disabled
+The local POC does not install or adopt a company-wide factory. GitHub Actions is disabled
 for the initial research stage. The local POC enforces its bounded data-only profile; broader factory adoption and
 tool-capable executor containment remain unverified. Private pilot evidence is not included in public Git.
 
