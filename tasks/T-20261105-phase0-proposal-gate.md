@@ -1,7 +1,7 @@
 ---
 id: T-20261105-phase0-proposal-gate
 title: "Validate synthetic planning proposals without execution authority"
-status: ready
+status: blocked
 format_version: 3
 profile: standard
 effort: M
@@ -20,7 +20,7 @@ priority: P2
 severity: feature
 due_date: (none)
 precondition: (none)
-blocked_reason: (none)
+blocked_reason: Implementation candidate locally verified; independent provider-diverse review is pending and native review is not admitted under current provider quota policy.
 security_class: (none)
 source_action_item: (none)
 tracker_ref: (none)

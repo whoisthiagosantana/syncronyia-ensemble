@@ -201,3 +201,6 @@ metagpt/ext/aflow/scripts/optimized
 
 # Private local research notes; never publish environment evidence.
 /.local/
+
+# Local Task-Spec telemetry; contracts and task state remain versioned.
+/tasks/_metrics.jsonl

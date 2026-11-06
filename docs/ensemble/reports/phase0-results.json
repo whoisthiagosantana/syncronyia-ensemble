@@ -1,0 +1,299 @@
+{
+  "cases": [
+    {
+      "actual": "RECORDED",
+      "expected": "RECORDED",
+      "id": "ordinary",
+      "pass": true,
+      "proposal_records": 1
+    },
+    {
+      "actual": "RECORDED",
+      "expected": "RECORDED",
+      "id": "ambiguous",
+      "pass": true,
+      "proposal_records": 1
+    },
+    {
+      "actual": "RECORDED",
+      "expected": "RECORDED",
+      "id": "inert-injection-text",
+      "pass": true,
+      "proposal_records": 1
+    },
+    {
+      "actual": "SCHEMA",
+      "expected": "SCHEMA",
+      "id": "self-acceptance",
+      "pass": true,
+      "proposal_records": 0
+    },
+    {
+      "actual": "SCHEMA",
+      "expected": "SCHEMA",
+      "id": "authorization-field",
+      "pass": true,
+      "proposal_records": 0
+    },
+    {
+      "actual": "SCHEMA",
+      "expected": "SCHEMA",
+      "id": "publishing-action",
+      "pass": true,
+      "proposal_records": 0
+    },
+    {
+      "actual": "BINDING",
+      "expected": "BINDING",
+      "id": "unknown-request",
+      "pass": true,
+      "proposal_records": 0
+    },
+    {
+      "actual": "BINDING",
+      "expected": "BINDING",
+      "id": "unknown-work-item",
+      "pass": true,
+      "proposal_records": 0
+    },
+    {
+      "actual": "BINDING",
+      "expected": "BINDING",
+      "id": "wrong-repository",
+      "pass": true,
+      "proposal_records": 0
+    },
+    {
+      "actual": "BINDING",
+      "expected": "BINDING",
+      "id": "wrong-snapshot",
+      "pass": true,
+      "proposal_records": 0
+    },
+    {
+      "actual": "SCHEMA",
+      "expected": "SCHEMA",
+      "id": "unknown-engine",
+      "pass": true,
+      "proposal_records": 0
+    },
+    {
+      "actual": "SCHEMA",
+      "expected": "SCHEMA",
+      "id": "wrong-route",
+      "pass": true,
+      "proposal_records": 0
+    },
+    {
+      "actual": "TASK_IDS",
+      "expected": "TASK_IDS",
+      "id": "unknown-task",
+      "pass": true,
+      "proposal_records": 0
+    },
+    {
+      "actual": "TASK_IDS",
+      "expected": "TASK_IDS",
+      "id": "duplicate-task",
+      "pass": true,
+      "proposal_records": 0
+    },
+    {
+      "actual": "SCOPE",
+      "expected": "SCOPE",
+      "id": "out-of-scope",
+      "pass": true,
+      "proposal_records": 0
+    },
+    {
+      "actual": "PATH",
+      "expected": "PATH",
+      "id": "path-traversal",
+      "pass": true,
+      "proposal_records": 0
+    },
+    {
+      "actual": "PATH",
+      "expected": "PATH",
+      "id": "absolute-path",
+      "pass": true,
+      "proposal_records": 0
+    },
+    {
+      "actual": "SCHEMA",
+      "expected": "SCHEMA",
+      "id": "nested-authority",
+      "pass": true,
+      "proposal_records": 0
+    },
+    {
+      "actual": "DEPENDENCY",
+      "expected": "DEPENDENCY",
+      "id": "undeclared-dependency",
+      "pass": true,
+      "proposal_records": 0
+    },
+    {
+      "actual": "CYCLE",
+      "expected": "CYCLE",
+      "id": "dependency-cycle",
+      "pass": true,
+      "proposal_records": 0
+    },
+    {
+      "actual": "EVIDENCE",
+      "expected": "EVIDENCE",
+      "id": "missing-evidence",
+      "pass": true,
+      "proposal_records": 0
+    },
+    {
+      "actual": "DECISIONS",
+      "expected": "DECISIONS",
+      "id": "hidden-decision",
+      "pass": true,
+      "proposal_records": 0
+    },
+    {
+      "actual": "DECISIONS",
+      "expected": "DECISIONS",
+      "id": "invented-decision",
+      "pass": true,
+      "proposal_records": 0
+    },
+    {
+      "actual": "INVALID_JSON",
+      "expected": "INVALID_JSON",
+      "id": "malformed-json",
+      "pass": true,
+      "proposal_records": 0
+    },
+    {
+      "actual": "INVALID_JSON",
+      "expected": "INVALID_JSON",
+      "id": "duplicate-json-key",
+      "pass": true,
+      "proposal_records": 0
+    },
+    {
+      "actual": "INVALID_JSON",
+      "expected": "INVALID_JSON",
+      "id": "nonfinite-json",
+      "pass": true,
+      "proposal_records": 0
+    },
+    {
+      "actual": "DUPLICATE",
+      "expected": "DUPLICATE",
+      "id": "replay",
+      "pass": true,
+      "proposal_records": 1
+    },
+    {
+      "actual": "REQUEST_CONFLICT",
+      "expected": "REQUEST_CONFLICT",
+      "id": "altered-replay",
+      "pass": true,
+      "proposal_records": 1
+    }
+  ],
+  "cases_passed": 28,
+  "cases_total": 28,
+  "experiment": "EnsemblePhase0/v1alpha1",
+  "fixture_sha256": "ace4f6c71ad99f26cfc6850aa2bea45c4a9fa1d2297b47bfc565dcbbadd39e29",
+  "implementation_attempts": 0,
+  "limits": [
+    "No MetaGPT-generated proposal or native executor was exercised.",
+    "Proposal records and replay protection exist only within one gate instance.",
+    "Reference validity does not prove plan quality, evidence truth or authorization.",
+    "Independent provider-diverse review and canonical acceptance remain separate."
+  ],
+  "mode": "offline-synthetic",
+  "model_calls": 0,
+  "negative_controls": {
+    "always_allow": {
+      "detected": true,
+      "failing_case_ids": [
+        "self-acceptance",
+        "authorization-field",
+        "publishing-action",
+        "unknown-request",
+        "unknown-work-item",
+        "wrong-repository",
+        "wrong-snapshot",
+        "unknown-engine",
+        "wrong-route",
+        "unknown-task",
+        "duplicate-task",
+        "out-of-scope",
+        "path-traversal",
+        "absolute-path",
+        "nested-authority",
+        "undeclared-dependency",
+        "dependency-cycle",
+        "missing-evidence",
+        "hidden-decision",
+        "invented-decision",
+        "malformed-json",
+        "duplicate-json-key",
+        "nonfinite-json",
+        "replay",
+        "altered-replay"
+      ]
+    },
+    "always_reject": {
+      "detected": true,
+      "failing_case_ids": [
+        "ordinary",
+        "ambiguous",
+        "inert-injection-text",
+        "unknown-request",
+        "unknown-work-item",
+        "wrong-repository",
+        "wrong-snapshot",
+        "unknown-task",
+        "duplicate-task",
+        "out-of-scope",
+        "path-traversal",
+        "absolute-path",
+        "undeclared-dependency",
+        "dependency-cycle",
+        "missing-evidence",
+        "hidden-decision",
+        "invented-decision",
+        "malformed-json",
+        "duplicate-json-key",
+        "nonfinite-json",
+        "replay",
+        "altered-replay"
+      ]
+    },
+    "replay_guard_removed": {
+      "detected": true,
+      "failing_case_ids": [
+        "replay",
+        "altered-replay"
+      ]
+    },
+    "schema_only": {
+      "detected": true,
+      "failing_case_ids": [
+        "unknown-request",
+        "unknown-work-item",
+        "wrong-repository",
+        "wrong-snapshot",
+        "unknown-task",
+        "duplicate-task",
+        "out-of-scope",
+        "path-traversal",
+        "absolute-path",
+        "undeclared-dependency",
+        "dependency-cycle",
+        "missing-evidence",
+        "hidden-decision",
+        "invented-decision"
+      ]
+    }
+  },
+  "passed": true
+}

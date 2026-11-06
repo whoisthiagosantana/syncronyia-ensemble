@@ -3,8 +3,9 @@
 This is an experimental research fork of MetaGPT, not an operational software company.
 Read `README.md`, `docs/ensemble/assessment.md`, and `docs/ensemble/architecture.md` first.
 
-- The initial fork changes documentation only. Native subscription adapters, MCP tools,
-  admission controls, and Task-Spec integrations are proposals, not implemented features.
+- The upstream runtime remains unchanged. `experiments/phase0/` is an offline synthetic
+  proposal-contract candidate; local test success is not independent acceptance. Native
+  subscription adapters, MCP tools and runtime admission remain unimplemented.
 - Keep upstream runtime identifiers and package names until an explicitly scoped migration.
   Preserve the MIT license and attribution. Record every upstream baseline change.
 - Technical documents, code, agent instructions, and commits use English.
