@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>2048</title>
+  <link rel="stylesheet" href="./style.css">
+  <script type="module" src="./ui.mjs"></script>
+</head>
+<body>
+  <main class="game">
+    <header class="header">
+      <div>
+        <h1>2048</h1>
+        <p class="subtitle">Join the tiles. Reach 2048!</p>
+      </div>
+      <div class="score-box">Score <strong data-testid="score">0</strong></div>
+    </header>
+
+    <div class="toolbar">
+      <p data-testid="status" role="status" aria-live="polite">Use arrow keys or the buttons to play.</p>
+      <button type="button" data-testid="restart">New game</button>
+    </div>
+
+    <div class="board" data-testid="board" role="grid" aria-label="2048 game board">
+      <div data-testid="cell" role="gridcell"></div><div data-testid="cell" role="gridcell"></div><div data-testid="cell" role="gridcell"></div><div data-testid="cell" role="gridcell"></div>
+      <div data-testid="cell" role="gridcell"></div><div data-testid="cell" role="gridcell"></div><div data-testid="cell" role="gridcell"></div><div data-testid="cell" role="gridcell"></div>
+      <div data-testid="cell" role="gridcell"></div><div data-testid="cell" role="gridcell"></div><div data-testid="cell" role="gridcell"></div><div data-testid="cell" role="gridcell"></div>
+      <div data-testid="cell" role="gridcell"></div><div data-testid="cell" role="gridcell"></div><div data-testid="cell" role="gridcell"></div><div data-testid="cell" role="gridcell"></div>
+    </div>
+
+    <div class="controls" aria-label="Move controls">
+      <button type="button" data-direction="up" aria-label="Move up">↑</button>
+      <div class="controls-row">
+        <button type="button" data-direction="left" aria-label="Move left">←</button>
+        <button type="button" data-direction="down" aria-label="Move down">↓</button>
+        <button type="button" data-direction="right" aria-label="Move right">→</button>
+      </div>
+    </div>
+  </main>
+</body>
+</html>
