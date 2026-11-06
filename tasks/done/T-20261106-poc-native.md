@@ -1,7 +1,7 @@
 ---
 id: T-20261106-poc-native
 title: "Compile upstream planning instructions and admit native data-only calls"
-status: ready
+status: done
 format_version: 3
 profile: standard
 effort: M
@@ -28,10 +28,14 @@ execution_backend: codex
 signed_off: true
 signed_off_by: thiago
 signed_off_at: 2026-11-06T02:45:51Z
-accepted: false
-accepted_by: (none)
-accepted_at: (none)
+accepted: true
+accepted_by: thiago
+accepted_at: 2026-11-06T12:29:25Z
 signed_off_sig: hmac-sha256-v3:a9566bca:a9c88a514ab0f63abd7040d8c4133fb2ead0603c5ef0bc1951131112edd6b4fa
+accepted_tier: 1
+accepted_attempt_id: a626a9b4-08d7-41d5-8b3a-a509b55ded7a
+accepted_authorization_ref: hmac-sha256-v3:a9566bca:a9c88a514ab0f63abd7040d8c4133fb2ead0603c5ef0bc1951131112edd6b4fa
+acceptance_record_digest: sha256:7bc59198eed355e98e6e408ec0fcc41896ac767c7d01a30a5a97ca928bcbd7af
 ---
 
 # Compile upstream planning instructions and admit native data-only calls
