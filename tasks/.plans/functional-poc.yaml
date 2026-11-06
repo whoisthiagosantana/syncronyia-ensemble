@@ -1,0 +1,201 @@
+api_version: taskspec.dev/v1
+kind: TaskPlan
+approved: true
+metadata:
+  name: ensemble-functional-poc
+  source: docs/ensemble/experiment-plan.md
+units:
+  - id: T-20261106-poc-boundaries
+    title: Constrain generated artifacts and isolate fixed verifiers
+    effort: M
+    profile: standard
+    agent: codex
+    execution_backend: codex
+    depends_on: []
+    touches_paths: []
+    creates_paths:
+      - ensemble_poc/__init__.py
+      - ensemble_poc/contracts.py
+      - ensemble_poc/containment.py
+      - poc_tests/test_boundaries.py
+    source_note: Owner approved the functional POC plan and explicitly requested implementation.
+    why: Demonstrate a bounded MCP to Ensemble to native subscription to independently verified 2048 path.
+    goal: Constrain generated artifacts and isolate fixed verifiers.
+    context: Local experimental POC only. Native models produce data without tools. Preserve upstream runtime. No public deployment or real tenant data. PostgreSQL for persistence.
+    behaviors:
+      - id: B-1
+        given: a valid scoped input
+        when: the component processes it
+        then: the bounded positive path returns verifiable artifacts and explicit state
+      - id: B-2
+        given: a hostile input or unavailable required capability
+        when: the component processes it
+        then: it fails closed without granting authority or launching duplicate execution
+    evals:
+      - id: eval_1
+        description: Discriminating positive and negative component tests.
+        command: python3 -m unittest poc_tests.test_boundaries -v
+        verifies:
+          - B-1
+          - B-2
+        terminal: true
+        expected_duration_sec: 60
+    anti_patterns:
+      - Do not claim native success from simulation.
+      - Do not give models signing keys, shell tools or acceptance authority.
+    do_not_touch:
+      - metagpt/
+      - tests/
+      - config/
+      - requirements.txt
+      - setup.py
+      - LICENSE
+      - .github/
+  - id: T-20261106-poc-native
+    title: Compile upstream planning instructions and admit native data-only calls
+    effort: M
+    profile: standard
+    agent: codex
+    execution_backend: codex
+    depends_on:
+      - T-20261106-poc-boundaries
+    touches_paths: []
+    creates_paths:
+      - ensemble_poc/planner.py
+      - ensemble_poc/native.py
+      - ensemble_poc/admission.py
+      - poc_tests/test_native.py
+    source_note: Owner approved the functional POC plan and explicitly requested implementation.
+    why: Demonstrate a bounded MCP to Ensemble to native subscription to independently verified 2048 path.
+    goal: Compile upstream planning instructions and admit native data-only calls.
+    context: Local experimental POC only. Native models produce data without tools. Preserve upstream runtime. No public deployment or real tenant data. PostgreSQL for persistence.
+    behaviors:
+      - id: B-1
+        given: a valid scoped input
+        when: the component processes it
+        then: the bounded positive path returns verifiable artifacts and explicit state
+      - id: B-2
+        given: a hostile input or unavailable required capability
+        when: the component processes it
+        then: it fails closed without granting authority or launching duplicate execution
+    evals:
+      - id: eval_1
+        description: Discriminating positive and negative component tests.
+        command: python3 -m unittest poc_tests.test_native -v
+        verifies:
+          - B-1
+          - B-2
+        terminal: true
+        expected_duration_sec: 60
+    anti_patterns:
+      - Do not claim native success from simulation.
+      - Do not give models signing keys, shell tools or acceptance authority.
+    do_not_touch:
+      - metagpt/
+      - tests/
+      - config/
+      - requirements.txt
+      - setup.py
+      - LICENSE
+      - .github/
+  - id: T-20261106-poc-coordinator
+    title: Persist and expose governed attempts through a local MCP facade
+    effort: M
+    profile: standard
+    agent: codex
+    execution_backend: codex
+    depends_on:
+      - T-20261106-poc-native
+    touches_paths: []
+    creates_paths:
+      - ensemble_poc/store.py
+      - ensemble_poc/service.py
+      - ensemble_poc/mcp.py
+      - ensemble_poc/__main__.py
+      - poc_tests/test_coordinator.py
+      - experiments/poc/requirements.txt
+    source_note: Owner approved the functional POC plan and explicitly requested implementation.
+    why: Demonstrate a bounded MCP to Ensemble to native subscription to independently verified 2048 path.
+    goal: Persist and expose governed attempts through a local MCP facade.
+    context: Local experimental POC only. Native models produce data without tools. Preserve upstream runtime. No public deployment or real tenant data. PostgreSQL for persistence.
+    behaviors:
+      - id: B-1
+        given: a valid scoped input
+        when: the component processes it
+        then: the bounded positive path returns verifiable artifacts and explicit state
+      - id: B-2
+        given: a hostile input or unavailable required capability
+        when: the component processes it
+        then: it fails closed without granting authority or launching duplicate execution
+    evals:
+      - id: eval_1
+        description: Discriminating positive and negative component tests.
+        command: python3 -m unittest poc_tests.test_coordinator -v
+        verifies:
+          - B-1
+          - B-2
+        terminal: true
+        expected_duration_sec: 60
+    anti_patterns:
+      - Do not claim native success from simulation.
+      - Do not give models signing keys, shell tools or acceptance authority.
+    do_not_touch:
+      - metagpt/
+      - tests/
+      - config/
+      - requirements.txt
+      - setup.py
+      - LICENSE
+      - .github/
+  - id: T-20261106-poc-demo
+    title: Verify the 2048 artifact and document the reproducible pilot
+    effort: M
+    profile: standard
+    agent: codex
+    execution_backend: codex
+    depends_on:
+      - T-20261106-poc-coordinator
+    touches_paths:
+      - README.md
+      - AGENTS.md
+      - docs/ensemble/experiment-plan.md
+    creates_paths:
+      - ensemble_poc/verifier.py
+      - experiments/poc/acceptance/game.test.mjs
+      - experiments/poc/acceptance/browser.py
+      - experiments/poc/README.md
+      - docs/ensemble/reports/functional-poc.md
+      - poc_tests/test_verifier.py
+    source_note: Owner approved the functional POC plan and explicitly requested implementation.
+    why: Demonstrate a bounded MCP to Ensemble to native subscription to independently verified 2048 path.
+    goal: Verify the 2048 artifact and document the reproducible pilot.
+    context: Local experimental POC only. Native models produce data without tools. Preserve upstream runtime. No public deployment or real tenant data. PostgreSQL for persistence.
+    behaviors:
+      - id: B-1
+        given: a valid scoped input
+        when: the component processes it
+        then: the bounded positive path returns verifiable artifacts and explicit state
+      - id: B-2
+        given: a hostile input or unavailable required capability
+        when: the component processes it
+        then: it fails closed without granting authority or launching duplicate execution
+    evals:
+      - id: eval_1
+        description: Discriminating positive and negative component tests.
+        command: python3 -m unittest poc_tests.test_verifier -v
+        verifies:
+          - B-1
+          - B-2
+        terminal: true
+        expected_duration_sec: 60
+    anti_patterns:
+      - Do not claim native success from simulation.
+      - Do not give models signing keys, shell tools or acceptance authority.
+    do_not_touch:
+      - metagpt/
+      - tests/
+      - config/
+      - requirements.txt
+      - setup.py
+      - LICENSE
+      - .github/
