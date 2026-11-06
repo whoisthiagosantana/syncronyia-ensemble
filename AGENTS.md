@@ -6,7 +6,10 @@ Read `README.md`, `docs/ensemble/assessment.md`, and `docs/ensemble/architecture
 - The upstream runtime remains unchanged. `experiments/phase0/` is an offline synthetic
   proposal contract accepted only for its bounded offline scope; this is not native readiness.
   Local test success alone is not independent acceptance. Native
-  subscription adapters, MCP tools and runtime admission remain unimplemented.
+  subscription adapters, MCP tools and runtime admission exist only in the separate
+  `ensemble_poc/` bounded local experiment. Its fixed 2048 pilot and independent
+  revalidation passed. This does not certify tool-capable workers, arbitrary projects,
+  production or company-wide factory adoption.
 - Keep upstream runtime identifiers and package names until an explicitly scoped migration.
   Preserve the MIT license and attribution. Record every upstream baseline change.
 - Technical documents, code, agent instructions, and commits use English.

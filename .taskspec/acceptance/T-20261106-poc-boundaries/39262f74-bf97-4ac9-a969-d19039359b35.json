@@ -1,0 +1,40 @@
+{
+  "acceptance_tier": 1,
+  "accepted_at": "2026-11-06T12:28:21Z",
+  "accepted_by": "thiago",
+  "contract": "AcceptanceRecord/v1",
+  "gate_outcomes": {
+    "authorization": {
+      "code": "AUTHORIZATION_VALID",
+      "status": "pass"
+    },
+    "evaluation": {
+      "code": "EVAL_PASSED",
+      "status": "pass"
+    },
+    "evidence": {
+      "code": "EVIDENCE_SATISFIED",
+      "proof": [
+        "format v3 or earlier: v4 policy receipts are not required"
+      ],
+      "status": "pass"
+    },
+    "preflight": {
+      "code": "PREFLIGHT_PASSED",
+      "status": "pass",
+      "warnings": []
+    }
+  },
+  "outcome": {
+    "code": "ACCEPTED_TIER_1",
+    "status": "accepted"
+  },
+  "receipts": [],
+  "subject": {
+    "attempt_id": "39262f74-bf97-4ac9-a969-d19039359b35",
+    "authorization_ref": "hmac-sha256-v3:a9566bca:c19e527c1d12363abef9497f74e1ad06b05c6b2c2c74ca36d68e90a3a4193205",
+    "base_commit": "46518262e10c8ef56b5c458e9e7a0ec2bf6e9afa",
+    "task_id": "T-20261106-poc-boundaries",
+    "task_revision_digest": "sha256:29af0ed7126ce833ae384c39582746e290207a353c636850e3a96c51282c3f51"
+  }
+}

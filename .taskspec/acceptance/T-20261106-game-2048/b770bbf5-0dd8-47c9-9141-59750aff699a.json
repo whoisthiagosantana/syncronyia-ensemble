@@ -1,0 +1,40 @@
+{
+  "acceptance_tier": 1,
+  "accepted_at": "2026-11-06T12:38:27Z",
+  "accepted_by": "thiago",
+  "contract": "AcceptanceRecord/v1",
+  "gate_outcomes": {
+    "authorization": {
+      "code": "AUTHORIZATION_VALID",
+      "status": "pass"
+    },
+    "evaluation": {
+      "code": "EVAL_PASSED",
+      "status": "pass"
+    },
+    "evidence": {
+      "code": "EVIDENCE_SATISFIED",
+      "proof": [
+        "format v3 or earlier: v4 policy receipts are not required"
+      ],
+      "status": "pass"
+    },
+    "preflight": {
+      "code": "PREFLIGHT_PASSED",
+      "status": "pass",
+      "warnings": []
+    }
+  },
+  "outcome": {
+    "code": "ACCEPTED_TIER_1",
+    "status": "accepted"
+  },
+  "receipts": [],
+  "subject": {
+    "attempt_id": "b770bbf5-0dd8-47c9-9141-59750aff699a",
+    "authorization_ref": "hmac-sha256-v3:a9566bca:ffe82433edddccb93389ccf6df1fd65e91720571f728a093d381d0323228ba8b",
+    "base_commit": "d735f35050ced2900f1c1925bc33b1acc0176c2c",
+    "task_id": "T-20261106-game-2048",
+    "task_revision_digest": "sha256:7deb377c5bd8ff128da81e077ef963a6cba38132582be6acf0181051c746cb84"
+  }
+}
