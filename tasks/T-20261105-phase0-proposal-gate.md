@@ -20,7 +20,7 @@ priority: P2
 severity: feature
 due_date: (none)
 precondition: (none)
-blocked_reason: Implementation candidate locally verified; independent provider-diverse review is pending and native review is not admitted under current provider quota policy.
+blocked_reason: Opus corrections implemented and locally checked; independent validation of the updated source is scheduled for midnight before canonical acceptance.
 security_class: (none)
 source_action_item: (none)
 tracker_ref: (none)

@@ -3,7 +3,7 @@
   "request_id": "REQUEST-2048-001",
   "work_item_id": "EXP-2048",
   "repository_sha": "8a48cffb07be584eedfcdf85e6a50526bcf53940",
-  "snapshot_sha256": "9a9e3a47307f20c4f8a6126ff6b6970cfbd6d9c9479cd6b0c7e3c8c671b24ee0",
+  "snapshot_sha256": "8cd1f3227420bbf83ceda220f216936814f8bb5c55a6e966bec0542aed8a42fa",
   "route": "TASK_SPEC",
   "engine": "ensemble",
   "state": "proposed",

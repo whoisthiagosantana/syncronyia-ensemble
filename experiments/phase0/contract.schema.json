@@ -23,19 +23,19 @@
     },
     "request_id": {
       "type": "string",
-      "pattern": "^[A-Z0-9][A-Z0-9_-]{0,63}$"
+      "pattern": "^[A-Z0-9][A-Z0-9_-]{0,63}(?![\\s\\S])"
     },
     "work_item_id": {
       "type": "string",
-      "pattern": "^[A-Z0-9][A-Z0-9_-]{0,63}$"
+      "pattern": "^[A-Z0-9][A-Z0-9_-]{0,63}(?![\\s\\S])"
     },
     "repository_sha": {
       "type": "string",
-      "pattern": "^[a-f0-9]{40}$"
+      "pattern": "^[a-f0-9]{40}(?![\\s\\S])"
     },
     "snapshot_sha256": {
       "type": "string",
-      "pattern": "^[a-f0-9]{64}$"
+      "pattern": "^[a-f0-9]{64}(?![\\s\\S])"
     },
     "route": {
       "const": "TASK_SPEC"
@@ -63,7 +63,7 @@
         "properties": {
           "task_id": {
             "type": "string",
-            "pattern": "^[A-Z0-9][A-Z0-9_-]{0,63}$"
+            "pattern": "^[A-Z0-9][A-Z0-9_-]{0,63}(?![\\s\\S])"
           },
           "summary": {
             "type": "string",
@@ -85,7 +85,7 @@
             "type": "array",
             "items": {
               "type": "string",
-              "pattern": "^[A-Z0-9][A-Z0-9_-]{0,63}$"
+              "pattern": "^[A-Z0-9][A-Z0-9_-]{0,63}(?![\\s\\S])"
             },
             "uniqueItems": true,
             "maxItems": 32
@@ -94,7 +94,7 @@
             "type": "array",
             "items": {
               "type": "string",
-              "pattern": "^[A-Z0-9][A-Z0-9_-]{0,63}$"
+              "pattern": "^[A-Z0-9][A-Z0-9_-]{0,63}(?![\\s\\S])"
             },
             "uniqueItems": true,
             "maxItems": 32,
@@ -116,7 +116,7 @@
       "type": "array",
       "items": {
         "type": "string",
-        "pattern": "^[A-Z0-9][A-Z0-9_-]{0,63}$"
+        "pattern": "^[A-Z0-9][A-Z0-9_-]{0,63}(?![\\s\\S])"
       },
       "uniqueItems": true,
       "maxItems": 32
@@ -136,20 +136,21 @@
         "allowed_paths",
         "allowed_dependency_ids",
         "allowed_evidence_ids",
-        "required_decision_ids"
+        "required_decision_ids",
+        "task_bindings"
       ],
       "properties": {
         "request_id": {
           "type": "string",
-          "pattern": "^[A-Z0-9][A-Z0-9_-]{0,63}$"
+          "pattern": "^[A-Z0-9][A-Z0-9_-]{0,63}(?![\\s\\S])"
         },
         "work_item_id": {
           "type": "string",
-          "pattern": "^[A-Z0-9][A-Z0-9_-]{0,63}$"
+          "pattern": "^[A-Z0-9][A-Z0-9_-]{0,63}(?![\\s\\S])"
         },
         "repository_sha": {
           "type": "string",
-          "pattern": "^[a-f0-9]{40}$"
+          "pattern": "^[a-f0-9]{40}(?![\\s\\S])"
         },
         "route": {
           "const": "TASK_SPEC"
@@ -161,7 +162,7 @@
           "type": "array",
           "items": {
             "type": "string",
-            "pattern": "^[A-Z0-9][A-Z0-9_-]{0,63}$"
+            "pattern": "^[A-Z0-9][A-Z0-9_-]{0,63}(?![\\s\\S])"
           },
           "uniqueItems": true,
           "maxItems": 32,
@@ -182,7 +183,7 @@
           "type": "array",
           "items": {
             "type": "string",
-            "pattern": "^[A-Z0-9][A-Z0-9_-]{0,63}$"
+            "pattern": "^[A-Z0-9][A-Z0-9_-]{0,63}(?![\\s\\S])"
           },
           "uniqueItems": true,
           "maxItems": 32
@@ -191,7 +192,7 @@
           "type": "array",
           "items": {
             "type": "string",
-            "pattern": "^[A-Z0-9][A-Z0-9_-]{0,63}$"
+            "pattern": "^[A-Z0-9][A-Z0-9_-]{0,63}(?![\\s\\S])"
           },
           "uniqueItems": true,
           "maxItems": 32,
@@ -201,10 +202,59 @@
           "type": "array",
           "items": {
             "type": "string",
-            "pattern": "^[A-Z0-9][A-Z0-9_-]{0,63}$"
+            "pattern": "^[A-Z0-9][A-Z0-9_-]{0,63}(?![\\s\\S])"
           },
           "uniqueItems": true,
           "maxItems": 32
+        },
+        "task_bindings": {
+          "type": "object",
+          "minProperties": 1,
+          "maxProperties": 32,
+          "propertyNames": {
+            "pattern": "^[A-Z0-9][A-Z0-9_-]{0,63}(?![\\s\\S])"
+          },
+          "additionalProperties": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "paths",
+              "depends_on",
+              "evidence_refs"
+            ],
+            "properties": {
+              "paths": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 180
+                },
+                "uniqueItems": true,
+                "minItems": 1,
+                "maxItems": 32
+              },
+              "depends_on": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "pattern": "^[A-Z0-9][A-Z0-9_-]{0,63}(?![\\s\\S])"
+                },
+                "uniqueItems": true,
+                "maxItems": 32
+              },
+              "evidence_refs": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "pattern": "^[A-Z0-9][A-Z0-9_-]{0,63}(?![\\s\\S])"
+                },
+                "uniqueItems": true,
+                "maxItems": 32,
+                "minItems": 1
+              }
+            }
+          }
         }
       }
     }

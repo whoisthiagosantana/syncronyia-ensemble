@@ -19,5 +19,30 @@
     "E-REQUIREMENTS",
     "E-ACCEPTANCE"
   ],
-  "required_decision_ids": []
+  "required_decision_ids": [],
+  "task_bindings": {
+    "EXP-2048-ENGINE": {
+      "paths": [
+        "src/engine.js"
+      ],
+      "depends_on": [
+        "BASE-APPROVED"
+      ],
+      "evidence_refs": [
+        "E-REQUIREMENTS",
+        "E-ACCEPTANCE"
+      ]
+    },
+    "EXP-2048-UI": {
+      "paths": [
+        "src/ui.js"
+      ],
+      "depends_on": [
+        "EXP-2048-ENGINE"
+      ],
+      "evidence_refs": [
+        "E-REQUIREMENTS"
+      ]
+    }
+  }
 }

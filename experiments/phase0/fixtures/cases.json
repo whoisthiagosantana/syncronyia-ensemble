@@ -242,5 +242,83 @@
         "Changed request content."
       ]
     }
+  },
+  {
+    "id": "missing-required-edge",
+    "expected": "TASK_BINDING",
+    "task_set": {
+      "index": 1,
+      "values": {
+        "depends_on": []
+      }
+    }
+  },
+  {
+    "id": "missing-required-evidence",
+    "expected": "TASK_BINDING",
+    "task_set": {
+      "index": 0,
+      "values": {
+        "evidence_refs": [
+          "E-REQUIREMENTS"
+        ]
+      }
+    }
+  },
+  {
+    "id": "swapped-task-scope",
+    "expected": "TASK_BINDING",
+    "task_set": {
+      "index": 0,
+      "values": {
+        "paths": [
+          "src/ui.js"
+        ]
+      }
+    }
+  },
+  {
+    "id": "overlapping-task-scope",
+    "expected": "TASK_BINDING",
+    "task_set": {
+      "index": 1,
+      "values": {
+        "paths": [
+          "src/engine.js"
+        ]
+      }
+    }
+  },
+  {
+    "id": "duplicate-task-preserving-allowed-set",
+    "expected": "TASK_IDS",
+    "append_task": {
+      "task_id": "EXP-2048-UI",
+      "summary": "Duplicate ID with different contents.",
+      "paths": [
+        "src/engine.js"
+      ],
+      "depends_on": [
+        "BASE-APPROVED"
+      ],
+      "evidence_refs": [
+        "E-REQUIREMENTS"
+      ]
+    }
+  },
+  {
+    "id": "escaped-duplicate-key",
+    "expected": "INVALID_JSON",
+    "raw": "{\"a\":1,\"\\u0061\":2}"
+  },
+  {
+    "id": "surrogate-in-assumption",
+    "expected": "INVALID_JSON",
+    "proposal_set": {
+      "assumptions": [
+        "\ud800"
+      ]
+    },
+    "ascii_json": true
   }
 ]

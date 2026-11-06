@@ -1,12 +1,15 @@
 """Contract tests for an untrusted, data-only planning boundary."""
 
 from copy import deepcopy
+from concurrent.futures import ThreadPoolExecutor
 import json
 from pathlib import Path
 import subprocess
 import sys
 import tempfile
+import time
 import unittest
+from unittest.mock import patch
 
 from gate import InvalidInput, MAX_INPUT_BYTES, ProposalGate, canonical_bytes, digest, load_json
 from run_experiment import ROOT, load_fixtures, run_experiment
@@ -19,7 +22,7 @@ class ProposalContractTests(unittest.TestCase):
     def test_fixture_matrix_and_mutations_discriminate(self):
         report = run_experiment()
         self.assertTrue(report["passed"], report)
-        self.assertEqual(report["cases_passed"], 28)
+        self.assertEqual(report["cases_passed"], 35)
         for mutant in report["negative_controls"].values():
             self.assertTrue(mutant["detected"])
 
@@ -67,11 +70,28 @@ class ProposalContractTests(unittest.TestCase):
         self.assertEqual(gate.submit(canonical_bytes(self.proposal)).code, "SCOPE")
 
     def test_snapshot_covers_every_context_field(self):
-        for field in ("allowed_paths", "allowed_evidence_ids", "required_decision_ids"):
+        changes = {
+            "request_id": "REQUEST-OTHER",
+            "work_item_id": "EXP-OTHER",
+            "repository_sha": "f" * 40,
+            "allowed_task_ids": list(reversed(self.context["allowed_task_ids"])),
+            "allowed_paths": self.context["allowed_paths"] + ["src/new.js"],
+            "allowed_dependency_ids": self.context["allowed_dependency_ids"] + ["BASE-OTHER"],
+            "allowed_evidence_ids": self.context["allowed_evidence_ids"] + ["E-NEW"],
+            "required_decision_ids": ["DECISION-SAVE"],
+            "task_bindings": deepcopy(self.context["task_bindings"]),
+        }
+        changes["task_bindings"]["EXP-2048-ENGINE"]["evidence_refs"].reverse()
+        for field, value in changes.items():
             context = deepcopy(self.context)
-            context[field].append("NEW-ENTRY" if field != "allowed_paths" else "src/new.js")
+            context[field] = value
             gate = ProposalGate(context)
             self.assertEqual(gate.submit(canonical_bytes(self.proposal)).code, "BINDING", field)
+
+    def test_fixed_route_and_engine_cannot_change_in_trusted_context(self):
+        for key in ("route", "engine"):
+            with self.assertRaises(InvalidInput):
+                ProposalGate({**self.context, key: "other"})
 
     def test_context_cannot_be_supplied_inside_proposal(self):
         self.proposal["context"] = {**self.context, "allowed_paths": ["secret"]}
@@ -115,8 +135,73 @@ class ProposalContractTests(unittest.TestCase):
         gate = ProposalGate(self.context)
         for raw in (b"x" * (MAX_INPUT_BYTES + 1), b"\xff", "[" * 2000, '"\\ud800"', None, 1):
             with self.subTest(type=type(raw).__name__):
-                self.assertIn(gate.submit(raw).code, {"INVALID_JSON", "SCHEMA"})
+                self.assertEqual(gate.submit(raw).code, "SCHEMA" if raw == '"\\ud800"' else "INVALID_JSON")
                 self.assertEqual(gate.record_count, 0)
+
+    def test_hostile_context_identifiers_cannot_have_trailing_newlines(self):
+        for field in ("request_id", "work_item_id", "repository_sha"):
+            context = {**self.context, field: self.context[field] + "\n"}
+            with self.assertRaises(InvalidInput):
+                ProposalGate(context)
+        for field in ("allowed_task_ids", "allowed_dependency_ids", "allowed_evidence_ids", "required_decision_ids"):
+            context = deepcopy(self.context)
+            context[field] = ["ID\n"]
+            with self.assertRaises(InvalidInput):
+                ProposalGate(context)
+
+    def test_required_bindings_cannot_overlap_or_name_unknown_references(self):
+        for field, value in (("paths", ["src/ui.js"]), ("depends_on", ["UNKNOWN"]), ("evidence_refs", ["E-UNKNOWN"])):
+            context = deepcopy(self.context)
+            context["task_bindings"]["EXP-2048-ENGINE"][field] = value
+            with self.assertRaises(InvalidInput):
+                ProposalGate(context)
+        context = deepcopy(self.context)
+        context["task_bindings"]["EXP-2048-ENGINE"]["depends_on"] = ["EXP-2048-UI"]
+        with self.assertRaises(InvalidInput):
+            ProposalGate(context)
+
+    def test_array_order_is_explicitly_significant_for_replay(self):
+        gate = ProposalGate(self.context)
+        self.assertEqual(gate.submit(canonical_bytes(self.proposal)).code, "RECORDED")
+        self.proposal["tasks"].reverse()
+        self.assertEqual(gate.submit(canonical_bytes(self.proposal)).code, "REQUEST_CONFLICT")
+        self.assertEqual(gate.record_count, 1)
+
+    def test_concurrent_conflicting_submissions_only_record_once(self):
+        gate = ProposalGate(self.context)
+        other = {**self.proposal, "assumptions": ["A different valid proposal."]}
+        original = gate._replay_decision
+
+        def slow_replay(request, proposal_digest):
+            result = original(request, proposal_digest)
+            if result is None:
+                time.sleep(.03)
+            return result
+
+        with patch.object(gate, "_replay_decision", side_effect=slow_replay):
+            with ThreadPoolExecutor(max_workers=2) as pool:
+                decisions = list(pool.map(gate.submit, [canonical_bytes(self.proposal), canonical_bytes(other)]))
+        self.assertEqual(sorted(item.code for item in decisions), ["RECORDED", "REQUEST_CONFLICT"])
+        self.assertEqual(gate.record_count, 1)
+
+    def test_duplicate_members_in_set_typed_fields_are_rejected(self):
+        for field in ("paths", "depends_on", "evidence_refs"):
+            proposal = deepcopy(self.proposal)
+            proposal["tasks"][0][field] *= 2
+            self.assertEqual(ProposalGate(self.context).submit(canonical_bytes(proposal)).code, "SCHEMA")
+
+    def test_input_limit_exact_boundary(self):
+        raw = canonical_bytes(self.proposal)
+        padded = raw + b" " * (MAX_INPUT_BYTES - len(raw))
+        self.assertEqual(ProposalGate(self.context).submit(padded).code, "RECORDED")
+        self.assertEqual(ProposalGate(self.context).submit(padded + b" ").code, "INVALID_JSON")
+
+    def test_check_and_output_flags_are_mutually_exclusive(self):
+        with tempfile.TemporaryDirectory() as directory:
+            output = Path(directory) / "must-not-exist.json"
+            result = subprocess.run([sys.executable, str(ROOT / "run_experiment.py"), "--check", "--output", str(output)], capture_output=True, timeout=10)
+            self.assertEqual(result.returncode, 2)
+            self.assertFalse(output.exists())
 
     def test_duplicate_keys_at_any_depth_are_rejected(self):
         for raw in ('{"a":1,"a":2}', '{"tasks":[{"task_id":"A","task_id":"B"}]}'):

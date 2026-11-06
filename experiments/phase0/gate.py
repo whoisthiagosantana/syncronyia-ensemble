@@ -10,6 +10,7 @@ import json
 from pathlib import Path, PurePosixPath
 import re
 import sys
+import threading
 
 from jsonschema import Draft202012Validator
 
@@ -75,6 +76,19 @@ def valid_path(value: str) -> bool:
     )
 
 
+def has_cycle(graph: dict[str, set[str]]) -> bool:
+    while graph:
+        roots = {node for node, dependencies in graph.items() if not dependencies}
+        if not roots:
+            return True
+        graph = {
+            node: dependencies - roots
+            for node, dependencies in graph.items()
+            if node not in roots
+        }
+    return False
+
+
 @dataclass(frozen=True)
 class Decision:
     code: str
@@ -95,13 +109,31 @@ class ProposalGate:
             raise InvalidInput("invalid trusted scope")
         if set(context["allowed_task_ids"]) & set(context["allowed_dependency_ids"]):
             raise InvalidInput("ambiguous dependency identity")
+        bindings = context["task_bindings"]
+        task_ids = set(context["allowed_task_ids"])
+        if set(bindings) != task_ids:
+            raise InvalidInput("incomplete trusted task bindings")
+        owned_paths = set()
+        for binding in bindings.values():
+            paths = set(binding["paths"])
+            if not paths <= set(context["allowed_paths"]) or owned_paths & paths:
+                raise InvalidInput("invalid or overlapping trusted task scope")
+            owned_paths.update(paths)
+            if not set(binding["depends_on"]) <= task_ids | set(context["allowed_dependency_ids"]):
+                raise InvalidInput("unknown trusted dependency")
+            if not set(binding["evidence_refs"]) <= set(context["allowed_evidence_ids"]):
+                raise InvalidInput("unknown trusted evidence")
+        if has_cycle({key: set(value["depends_on"]) & task_ids for key, value in bindings.items()}):
+            raise InvalidInput("cyclic trusted task bindings")
         self._context = deepcopy(context)
         self._snapshot = digest(self._context)
         self._records: dict[str, str] = {}
+        self._lock = threading.Lock()
 
     @property
     def record_count(self) -> int:
-        return len(self._records)
+        with self._lock:
+            return len(self._records)
 
     def _semantic_error(self, proposal: dict) -> str | None:
         context = self._context
@@ -130,15 +162,12 @@ class ProposalGate:
             task["task_id"]: set(task["depends_on"]) & set(task_ids)
             for task in tasks
         }
-        while graph:
-            roots = {node for node, dependencies in graph.items() if not dependencies}
-            if not roots:
-                return "CYCLE"
-            graph = {
-                node: dependencies - roots
-                for node, dependencies in graph.items()
-                if node not in roots
-            }
+        if has_cycle(graph):
+            return "CYCLE"
+        for task in tasks:
+            binding = context["task_bindings"][task["task_id"]]
+            if any(set(task[key]) != set(binding[key]) for key in ("paths", "depends_on", "evidence_refs")):
+                return "TASK_BINDING"
         return None
 
     def _replay_decision(self, request_id: str, proposal_digest: str) -> Decision | None:
@@ -160,11 +189,12 @@ class ProposalGate:
             proposal_digest = digest(proposal)
         except (InvalidInput, UnicodeError, RecursionError):
             return Decision("INVALID_JSON")
-        replay = self._replay_decision(proposal["request_id"], proposal_digest)
-        if replay:
-            return replay
-        self._records[proposal["request_id"]] = proposal_digest
-        return Decision("RECORDED", proposal_digest)
+        with self._lock:
+            replay = self._replay_decision(proposal["request_id"], proposal_digest)
+            if replay:
+                return replay
+            self._records[proposal["request_id"]] = proposal_digest
+            return Decision("RECORDED", proposal_digest)
 
 
 def read_bounded(path: str) -> bytes:
