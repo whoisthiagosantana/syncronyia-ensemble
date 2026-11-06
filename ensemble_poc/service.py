@@ -273,7 +273,13 @@ class Service:
         decision = gate.submit(json.dumps(bound))
         if decision.code != "RECORDED":
             raise Rejected("PROPOSAL_GATE_REJECTED")
-        from .verifier import verify
+        from .verifier import verify, preflight
+
+        # A broken browser runtime must not spend model calls correcting valid code.
+        self.store.event(
+            row["id"],
+            {"event": "verification_preflight", "result": preflight(Path(self.config["repository"]), self.config)},
+        )
 
         feedback = None
         for revision in range(2):
@@ -290,6 +296,7 @@ class Service:
             target = folder / ("candidate-" + str(revision))
             manifest = materialize(bundle, target)
             checked = verify(target, Path(self.config["repository"]), self.config)
+            (folder / ("verification-" + str(revision) + ".json")).write_text(json.dumps(checked, indent=2))
             if checked["passed"]:
                 review, review_receipt = invoke(
                     "claude",

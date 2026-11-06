@@ -2,12 +2,26 @@ from pathlib import Path
 import tempfile
 import unittest
 import hashlib
-from ensemble_poc.verifier import verify
+import os
+import json
+from ensemble_poc.verifier import verify, preflight
 from ensemble_poc.containment import run_node
 from ensemble_poc.contracts import Rejected
 
 
 class VerifierTests(unittest.TestCase):
+    def test_changed_harness_blocks_preflight_before_browser(self):
+        with tempfile.TemporaryDirectory() as d:
+            with self.assertRaisesRegex(Rejected, "ACCEPTANCE_HARNESS_CHANGED"):
+                preflight(Path(__file__).resolve().parents[1], {"runtime_root": d, "acceptance_sha256": {}})
+
+    def test_real_browser_positive_control(self):
+        path = os.environ.get("ENSEMBLE_TEST_CONFIG")
+        if not path:
+            raise RuntimeError("ENSEMBLE_TEST_CONFIG must identify the private browser test runtime")
+        config = json.loads(Path(path).read_text())
+        self.assertEqual(preflight(Path(__file__).resolve().parents[1], config), {"passed": True, "preflight": True})
+
     def test_candidate_cannot_forge_logic_report(self):
         repo = Path(__file__).resolve().parents[1]
         with tempfile.TemporaryDirectory() as d:

@@ -85,10 +85,12 @@ def stop_unit(unit):
         raise Rejected("TERMINATION_UNCONFIRMED")
 
 
-def bounded(command, *, data=None, timeout=60, memory="256M", diagnostic=False):
+def bounded(command, *, data=None, timeout=60, memory="256M", diagnostic=False, tasks=64):
     """Enforce termination independently of the MCP facade, including grandchildren."""
     if data is not None and len(data) > 1048576:
         raise Rejected("PROCESS_INPUT_LIMIT")
+    if type(tasks) is not int or not 1 <= tasks <= 256:
+        raise Rejected("PROCESS_TASK_LIMIT_INVALID")
     if not shutil.which("bwrap") or not shutil.which("systemd-run"):
         raise Rejected("CONTAINMENT_UNAVAILABLE")
     unit = "ensemble-poc-call-" + uuid.uuid4().hex + ".service"
@@ -102,7 +104,7 @@ def bounded(command, *, data=None, timeout=60, memory="256M", diagnostic=False):
         "--unit=" + unit,
         "--property=RuntimeMaxSec=" + str(timeout),
         "--property=MemoryMax=" + memory,
-        "--property=TasksMax=64",
+        "--property=TasksMax=" + str(tasks),
         "--property=KillMode=control-group",
         "--property=TimeoutStopSec=3",
     ]

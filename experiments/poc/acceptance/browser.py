@@ -3,6 +3,7 @@ from functools import partial
 from http.server import SimpleHTTPRequestHandler, ThreadingHTTPServer
 import json
 import threading
+import sys
 
 from playwright.sync_api import sync_playwright
 
@@ -30,6 +31,12 @@ with sync_playwright() as p:
             foreign.append("external_request"); req.abort()
     context.route("**/*", route)
     page = context.new_page(); page.on("pageerror", lambda error: errors.append("page_error"))
+    if '--preflight' in sys.argv:
+        page.set_content('<title>Ensemble browser positive control</title>')
+        assert page.title()=='Ensemble browser positive control'
+        browser.close();server.shutdown()
+        print(json.dumps({'passed':True,'preflight':True}))
+        raise SystemExit(0)
     page.goto(origin, wait_until="networkidle")
     board = page.get_by_test_id("board"); board.wait_for(state="visible")
     cells = page.get_by_test_id("cell"); assert cells.count() == 16

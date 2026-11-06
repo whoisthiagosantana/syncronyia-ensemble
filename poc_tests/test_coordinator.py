@@ -107,7 +107,10 @@ class LedgerTests(unittest.TestCase):
             svc.work(planned["attempt_id"])
             self.assertEqual(svc.store.get(planned["attempt_id"])["state"], "planned")
             run = svc.submit_run("T-GAME-2048", planned["attempt_id"].upper(), "run")
-            with patch("ensemble_poc.verifier.verify", return_value={"passed": True, "simulated": True}):
+            with (
+                patch("ensemble_poc.verifier.verify", return_value={"passed": True, "simulated": True}),
+                patch("ensemble_poc.verifier.preflight", return_value={"passed": True, "simulated": True}),
+            ):
                 svc.work(run["attempt_id"])
             submitted = svc.store.get(run["attempt_id"])
             self.assertEqual(submitted["state"], "submitted")
