@@ -1,0 +1,77 @@
+api_version: taskspec.dev/v1
+kind: TaskPlan
+approved: true
+metadata:
+  name: ensemble-phase0-proposal-gate
+  source: docs/ensemble/experiment-plan.md
+units:
+  - id: T-20261105-phase0-proposal-gate
+    title: Validate synthetic planning proposals without execution authority
+    effort: M
+    profile: standard
+    agent: codex
+    execution_backend: codex
+    depends_on: []
+    touches_paths:
+      - README.md
+      - AGENTS.md
+      - .gitignore
+      - docs/ensemble/experiment-plan.md
+    creates_paths:
+      - experiments/phase0/gate.py
+      - experiments/phase0/contract.schema.json
+      - experiments/phase0/requirements.txt
+      - experiments/phase0/test_gate.py
+      - experiments/phase0/run_experiment.py
+      - experiments/phase0/fixtures/context.json
+      - experiments/phase0/fixtures/proposal.json
+      - experiments/phase0/fixtures/cases.json
+      - experiments/phase0/README.md
+      - docs/ensemble/reports/phase0.md
+      - docs/ensemble/reports/phase0-results.json
+    source_note: Owner authorized starting the existing experiment; this leaf implements offline Phase 0 only.
+    why: The experiment needs a reproducible proposal contract before native model integration.
+    goal: Validate and record synthetic proposals while rejecting authority escalation, scope defects and replay.
+    context: No model calls, upstream runtime changes, network, database, production data or execution adapters in the Phase 0 implementation. A separate read-only review may use an admitted native harness.
+    behaviors:
+      - id: B-1
+        given: a trusted synthetic snapshot and a valid bound proposal
+        when: the offline gate validates and records it
+        then: one proposal is recorded with no implementation or authorization action
+      - id: B-2
+        given: malformed, foreign, out-of-scope or authority-bearing proposal content
+        when: the gate evaluates it
+        then: it rejects the proposal with a stable reason and records no proposal
+      - id: B-3
+        given: a proposal for a request already recorded in this gate instance
+        when: it is replayed or replaced
+        then: equivalent replay is duplicate and altered content conflicts without creating another record
+      - id: B-4
+        given: missing trusted decisions or invalid dependencies and evidence references
+        when: a proposal hides a decision or changes the declared graph or references
+        then: the external gate rejects it and reports a deterministic reason
+    evals:
+      - id: eval_1
+        description: Positive controls, hostile inputs and contextual binding checks pass.
+        command: python3 -m unittest discover -s experiments/phase0 -p 'test_*.py' -v
+        verifies: [B-1, B-2, B-3, B-4]
+        terminal: true
+        expected_duration_sec: 10
+      - id: eval_2
+        description: Reproducible fixture experiment and always-allow/always-reject controls discriminate.
+        command: python3 experiments/phase0/run_experiment.py --check
+        verifies: [B-1, B-2, B-3, B-4]
+        terminal: true
+        expected_duration_sec: 10
+    anti_patterns:
+      - Do not interpret valid proposal as signed authorization or accepted delivery.
+      - Do not claim in-memory deduplication is durable or exactly-once dispatch.
+      - Do not invoke MetaGPT tools, executors or paid APIs from the offline gate.
+    do_not_touch:
+      - metagpt/
+      - tests/
+      - config/
+      - requirements.txt
+      - setup.py
+      - .github/
+      - LICENSE
