@@ -1,7 +1,7 @@
 ---
 id: T-20261105-phase0-proposal-gate
 title: "Validate synthetic planning proposals without execution authority"
-status: in-progress
+status: done
 format_version: 3
 profile: standard
 effort: M
@@ -10,7 +10,7 @@ agent: codex
 parent: (none)
 depends_on: []
 supersedes: (none)
-touches_paths: [README.md, AGENTS.md, .gitignore, docs/ensemble/experiment-plan.md]
+touches_paths: [README.md, AGENTS.md, .gitignore, docs/ensemble/experiment-plan.md, .taskspec/config, tasks/.gitkeep, tasks/.plans/phase0-proposal-gate.yaml]
 creates_paths: [experiments/phase0/gate.py, experiments/phase0/contract.schema.json, experiments/phase0/requirements.txt, experiments/phase0/test_gate.py, experiments/phase0/run_experiment.py, experiments/phase0/fixtures/context.json, experiments/phase0/fixtures/proposal.json, experiments/phase0/fixtures/cases.json, experiments/phase0/README.md, docs/ensemble/reports/phase0.md, docs/ensemble/reports/phase0-results.json]
 source_note: "Owner authorized starting the existing experiment; this leaf implements offline Phase 0 only."
 created: "2026-11-05T00:00:00Z"
@@ -27,11 +27,15 @@ tracker_ref: (none)
 execution_backend: codex
 signed_off: true
 signed_off_by: thiago
-signed_off_at: 2026-11-06T01:24:21Z
-accepted: false
-accepted_by: (none)
-accepted_at: (none)
-signed_off_sig: hmac-sha256-v3:a9566bca:66f9872e11415d0ad8e21c95561db0f8032187e0d8c0acf8e499f4bf6fa706ba
+signed_off_at: 2026-11-06T02:15:52Z
+accepted: true
+accepted_by: thiago
+accepted_at: 2026-11-06T02:16:29Z
+signed_off_sig: hmac-sha256-v3:a9566bca:a6c23b6e4b35edff001d7d5a8c4d8a8843c026c814c8677259bc548cf9b697e3
+accepted_tier: 1
+accepted_attempt_id: 3dd295c9-1b22-4df6-af8e-6310a10835b5
+accepted_authorization_ref: hmac-sha256-v3:a9566bca:a6c23b6e4b35edff001d7d5a8c4d8a8843c026c814c8677259bc548cf9b697e3
+acceptance_record_digest: sha256:c37595683549764fc25cf2a590b6d51ad5064d6f602164b3e161bc305215c597
 ---
 
 # Validate synthetic planning proposals without execution authority
@@ -43,6 +47,10 @@ signed_off_sig: hmac-sha256-v3:a9566bca:66f9872e11415d0ad8e21c95561db0f8032187e0
 Validate and record synthetic proposals while rejecting authority escalation, scope defects and replay.
 
 ## Context
+
+The task also owns its repository-local Task-Spec bootstrap config, backlog marker and
+TaskPlan manifest. These three administrative paths were omitted from the initial scope;
+the coordinator explicitly authorizes and re-seals them without extending runtime scope.
 
 No model calls, upstream runtime changes, network, database, production data or execution adapters in the Phase 0 implementation. A separate read-only review may use an admitted native harness.
 

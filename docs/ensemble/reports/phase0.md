@@ -1,9 +1,9 @@
 # Phase 0: offline proposal contract
 
-Status: locally verified candidate; independent acceptance pending.
+Status: bounded offline Phase 0 accepted at Task-Spec Tier 1; native execution not certified.
 Run date: 2026-11-05 America/Sao_Paulo (2026-11-06 UTC). Updated after Opus review.
 Base: `8a48cffb07be584eedfcdf85e6a50526bcf53940`.
-Scope: [authorized offline leaf](../../../tasks/T-20261105-phase0-proposal-gate.md).
+Scope: [authorized offline leaf](../../../tasks/done/T-20261105-phase0-proposal-gate.md).
 Route recommendation and actual path: TASK_SPEC with direct supervised implementation.
 No factory or autonomous company was adopted.
 
@@ -43,15 +43,16 @@ operation with an explicit path; proposals cannot select that destination.
 
 The Task-Spec CLI is version 3.9.0. The owner authorized starting the existing experiment;
 the coordinator materialized and sealed a bounded Phase 0 leaf. The tool's effort/path
-budget warned about 15 declared paths. This was retained as one coherent M leaf because
+budget warned about 18 declared paths. This was retained as one coherent M leaf because
 the schema, contextual gate, synthetic fixtures and discriminating experiment form one
 contract; documentation and results account for part of that explicit surface. No L/XL
 work or subordinate implementation worker was dispatched.
 
 The HMAC key stays in Git metadata, outside version control. No signing-key value or native
 authentication file was exposed or included in public evidence. A repository-key holder can sign a task; the
-seal does not prove the identity of a human approver. Canonical acceptance has deliberately
-not been stamped while required independent review remains unavailable.
+seal does not prove the identity of a human approver. Canonical acceptance was stamped only after independent Opus review conditions and
+coordinator verification were resolved. The canonical acceptance record is versioned; a fresh clone still needs the repository
+key and retained evidence to reproduce the local Tier 1 verification.
 
 The upstream `metagpt/`, `tests/`, configuration, dependencies, workflows and license remain
 outside this leaf's write surface. Python 3.12.3 and installed packages were used; the isolated
@@ -77,13 +78,13 @@ offline namespace probe does not satisfy those requirements. Auth, effective mod
 quota, provider-only egress, timeout, cancellation and session behavior still need evidence.
 No 2048 implementation, MCP service, company migration or productivity comparison has run.
 
-Keep this candidate on its experiment branch until the applicable review/acceptance gates
-pass. Do not infer readiness from the local tests. Rollback is disabling/removing the optional
+The bounded offline acceptance gates passed; integration may proceed under the house
+autonomy rules. Do not infer native readiness from the local tests. Rollback is disabling/removing the optional
 experiment by reverting its changes; upstream runtime and canonical company state are intact.
 
 ## Resources and measurement
 
-Declared offline-experiment model calls: 0 (not telemetry). Subordinate implementation workers: 0; one successful independent Opus review turn.
+Declared offline-experiment model calls: 0 (not telemetry). Subordinate implementation workers: 0; two successful independent Opus review turns.
 No application containers, volumes, networks or databases were created.
 The offline namespace and immediate review processes exited. Repository-local ignored handoff/probe files are retained
 for coordinator inspection; the HMAC key remains in repository-private Git metadata. No runtime
@@ -150,3 +151,40 @@ mutation evidence, automatic comparison of `--check` with a stored report, stric
 byte/duplicate-key fingerprinting and richer CLI misuse classification. They do not confer
 native-executor readiness. The scheduled midnight call is retained for a distinct Phase 1
 readiness/authority-boundary audit, rather than repeating this code-correction review.
+
+## Administrative scope correction
+
+The first formal acceptance attempt passed evaluation, HMAC, baseline discrimination and
+sealed-evidence checks, but correctly rejected three undeclared bootstrap paths:
+`.taskspec/config`, `tasks/.gitkeep`, and the TaskPlan manifest. The coordinator amended
+and re-sealed the same task to declare those existing administrative files explicitly.
+No runtime write scope or acceptance criterion was weakened. A new handoff represents the
+re-authorized validation attempt; the original handoff remains preserved privately.
+The full change set is additionally checked against the original pre-experiment base
+`8a48cffb07be584eedfcdf85e6a50526bcf53940`, which is also the explicit negative-control
+baseline. This avoids treating a later handoff base as evidence of the original scope.
+
+## Final bounded acceptance
+
+The external coordinator resolved the four stated offline acceptance conditions without
+changing the reviewed `gate.py` or schema. The final 29-test suite and 35-case experiment
+passed; weakening path validation caused six targeted test failures, and weakening an
+individual identifier pattern caused one, both with zero infrastructure errors. The
+network probe is explicitly INCONCLUSIVE, not accepted network-containment evidence.
+
+Canonical `taskspec accept --stamp` then passed at Tier 1: evaluation, current handoff/
+revision/scope, HMAC integrity, original-baseline gold-sanity and sealed evidence policy.
+The task transitioned to `done`. The original pre-experiment diff was separately checked
+against all declared paths after the administrative scope correction. No check was skipped
+or downgraded. The local acceptance digest is
+`sha256:c37595683549764fc25cf2a590b6d51ad5064d6f602164b3e161bc305215c597`.
+The native Opus verdicts themselves remained CORRECT; this final acceptance is the external
+coordinator's decision after resolving their stated conditions, not a claim that Opus issued
+an unqualified ACCEPT for later documentation/test edits.
+
+Only offline Phase 0 is accepted. Durable idempotency, planning quality, provider egress,
+native implementation-executor containment/cancellation and productivity remain unproven.
+The midnight audit retains those questions as its distinct advisory scope.
+
+The CLI archived the completed Task-Spec under `tasks/done/`. The unchanged canonical
+[AcceptanceRecord](../../../.taskspec/acceptance/T-20261105-phase0-proposal-gate/3dd295c9-1b22-4df6-af8e-6310a10835b5.json) contains no credentials or private workspace paths.

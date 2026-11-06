@@ -17,6 +17,9 @@ units:
       - AGENTS.md
       - .gitignore
       - docs/ensemble/experiment-plan.md
+      - .taskspec/config
+      - tasks/.gitkeep
+      - tasks/.plans/phase0-proposal-gate.yaml
     creates_paths:
       - experiments/phase0/gate.py
       - experiments/phase0/contract.schema.json

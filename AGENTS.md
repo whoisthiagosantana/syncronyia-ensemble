@@ -4,7 +4,8 @@ This is an experimental research fork of MetaGPT, not an operational software co
 Read `README.md`, `docs/ensemble/assessment.md`, and `docs/ensemble/architecture.md` first.
 
 - The upstream runtime remains unchanged. `experiments/phase0/` is an offline synthetic
-  proposal-contract candidate; local test success is not independent acceptance. Native
+  proposal contract accepted only for its bounded offline scope; this is not native readiness.
+  Local test success alone is not independent acceptance. Native
   subscription adapters, MCP tools and runtime admission remain unimplemented.
 - Keep upstream runtime identifiers and package names until an explicitly scoped migration.
   Preserve the MIT license and attribution. Record every upstream baseline change.

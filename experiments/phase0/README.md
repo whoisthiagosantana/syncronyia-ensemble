@@ -1,6 +1,8 @@
 # Offline proposal contract experiment
 
-Status: candidate, locally tested; corrections after provider-diverse Opus review await revalidation and canonical acceptance.
+Status: accepted for bounded offline Phase 0 at Task-Spec Tier 1. Independent Opus review
+conditions were resolved and verified by the external coordinator. Native implementation
+execution remains unimplemented and uncertified.
 The fixture experiment launches no MetaGPT runtime, model, native executor, tracker, queue or
 implementation task. A separate owner-authorized native Opus review examined an earlier candidate.
 

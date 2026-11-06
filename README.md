@@ -2,9 +2,10 @@
 
 **Experimental MetaGPT fork for governed AI software delivery.**
 
-Status: **research / offline Phase 0 candidate**. A synthetic proposal gate and its local
-tests exist in [experiments/phase0](experiments/phase0/README.md); independent acceptance is
-pending. Native Claude Code/Codex execution, MCP tools and governed orchestration remain
+Status: **research / offline Phase 0 accepted**. A synthetic proposal gate and its local
+tests exist in [experiments/phase0](experiments/phase0/README.md). The external coordinator
+accepted this bounded offline phase at Task-Spec Tier 1 after independent Opus review
+conditions were resolved; this does not certify native execution. Native Claude Code/Codex execution, MCP tools and governed orchestration remain
 **proposed, not implemented**.
 The Python runtime and dependencies remain upstream MetaGPT at
 [`11cdf466`](https://github.com/FoundationAgents/MetaGPT/tree/11cdf466d042aece04fc6cfd13b28e1a70341b1f).
