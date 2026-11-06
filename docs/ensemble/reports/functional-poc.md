@@ -9,6 +9,10 @@ independent offline logic and browser checks, and obtained an independent Claude
 review. The result reached `submitted`; the external coordinator owns canonical
 Task-Spec acceptance and Git integration. A model never accepted its own work.
 
+The owner personally played the result on 2026-11-06 and confirmed it was fully
+playable. This is reported functional acceptance, additional to the automated checks.
+See the [complete assessment and delivery-flow recommendation](poc-assessment-and-delivery-fit.md).
+
 ## Successful path
 
 | Observation | Measured result |

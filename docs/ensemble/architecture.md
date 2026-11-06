@@ -1,6 +1,9 @@
 # Governed composition proposal
 
-Status: experimental design, not implemented. Date: 2026-11-05.
+Status: general composition remains proposed; the bounded local 2048 POC is implemented.
+Original design date: 2026-11-05. Updated evidence: 2026-11-06.
+See the [POC assessment and delivery integration](reports/poc-assessment-and-delivery-fit.md)
+for the measured profile and the proposed placement within Converge.
 Scope: a single managed delivery system that can use existing harnesses, Task-Spec,
 Quadrant, and an optional MetaGPT-derived planning engine.
 

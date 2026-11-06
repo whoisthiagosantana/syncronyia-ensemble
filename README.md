@@ -33,6 +33,7 @@ Internal role messages and completion fields do not authorize work or certify de
 | [Assessment](docs/ensemble/assessment.md) | Source findings, native subscription feasibility, MCP and company-management limits. |
 | [Architecture proposal](docs/ensemble/architecture.md) | Single authority, state ownership, route selection, admission and proposed MCP tools. |
 | [Experiment plan](docs/ensemble/experiment-plan.md) | Offline fixtures, native executor proof, 2048 pilot and rejection criteria. |
+| [POC assessment and development flow](docs/ensemble/reports/poc-assessment-and-delivery-fit.md) | Owner gameplay confirmation, results, limits, routing recommendations and proposed Ensemble integration. |
 | [Astra advisory](docs/ensemble/reviews/2026-11-05-astra-advisory.md) | Reviewed recommendations, corrections and evidence limits. |
 | [Upstream provenance](docs/ensemble/upstream.md) | Baseline, license, fork scope, validation and rollback. |
 
