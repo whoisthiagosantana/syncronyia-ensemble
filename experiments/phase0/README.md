@@ -34,14 +34,17 @@ The untrusted proposal must conform to the closed schema and those context const
 It can contain explanatory text but no command, accepted state, authorization envelope or
 publishing action. Text remains inert data; passing validation does not make it trusted.
 The gate checks graph cycles, exact task coverage, unresolved decisions, reference scope,
-and exact per-task path/dependency/evidence sets. Trusted task scopes must be disjoint.
+and exact per-task path/dependency/evidence sets. Trusted task path tokens must be string-disjoint. Directory ancestry, case aliases and
+filesystem identity are deferred; this does not establish disjoint filesystem write scopes.
 It does not assess whether summaries are good, evidence is true, dependencies are complete
 in the business domain, or an additional decision should have been discovered.
 
 The gate returns `RECORDED` only for a structurally/contextually valid proposal. That records
 its digest in the current object, not a canonical work item, authorization or execution.
-Replaying equivalent JSON in that object returns `DUPLICATE`; equivalence ignores object-key
-order and whitespace only. Array order remains significant for replay and snapshot digests.
+Replaying equivalent JSON in that object returns `DUPLICATE`; equivalence uses the parsed JSON values, ignoring object-key
+order, insignificant JSON whitespace and equivalent escape spellings. Unicode normalization
+is not performed. Array order remains significant for replay and snapshot digests, even
+where binding checks treat those arrays as sets.
 Altered valid content for the
 same request returns `REQUEST_CONFLICT`. Restarting the object loses those records.
 The replay check and record write are locked for concurrent submissions within one object.
@@ -59,13 +62,15 @@ or symlink sandbox; the gate never opens proposal-referenced paths.
 ## Evidence
 
 `fixtures/cases.json` drives the reproducible experiment. The local run passed 35 cases and
-27 unit/CLI tests. Four broken gate variants were detected: always allow, always reject,
+29 unit/CLI tests. Four broken gate variants were detected: always allow, always reject,
 schema-only checks, and removal of replay detection. The schema-only and replay mutations
 exercise contextual and retry invariants specifically; broad controls also test the harness.
 
 An additional local probe ran the same 35 cases under a read-only mount in an isolated
 network namespace, with no user home and with temporary writes allowed only in the scratch
-filesystem. This does not verify provider networking, native login, process containment or
+filesystem. The external connection failed, but no matching network positive control was
+run; the network-isolation verdict is INCONCLUSIVE, not proof of denied egress. This does
+not verify provider networking, native login, process containment or
 trusted cancellation for an actual coding executor.
 
 See the [report](../../docs/ensemble/reports/phase0.md) and

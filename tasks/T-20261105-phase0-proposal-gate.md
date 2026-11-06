@@ -1,7 +1,7 @@
 ---
 id: T-20261105-phase0-proposal-gate
 title: "Validate synthetic planning proposals without execution authority"
-status: blocked
+status: in-progress
 format_version: 3
 profile: standard
 effort: M
@@ -20,7 +20,7 @@ priority: P2
 severity: feature
 due_date: (none)
 precondition: (none)
-blocked_reason: Opus corrections implemented and locally checked; independent validation of the updated source is scheduled for midnight before canonical acceptance.
+blocked_reason: (none)
 security_class: (none)
 source_action_item: (none)
 tracker_ref: (none)

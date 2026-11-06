@@ -174,7 +174,9 @@ finally:
  s.close()
 print(json.dumps({'offline_cases':report['cases_total'],'cases_passed':report['cases_passed'],
  'user_home_absent':True,'experiment_readonly':readonly,'temporary_write_positive':True,
- 'external_connection_denied':denied,'native_executor_tested':False}))
+ 'external_connection_failed':denied,
+ 'network_isolation_verdict':'INCONCLUSIVE_NO_NETWORK_POSITIVE_CONTROL',
+ 'native_executor_tested':False}))
 """
 
 

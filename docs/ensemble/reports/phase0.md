@@ -12,13 +12,13 @@ No factory or autonomous company was adopted.
 | Check | Observation | Limit |
 | --- | --- | --- |
 | Fixture experiment | 35/35 cases passed with expected codes and record counts. | Synthetic proposals, not MetaGPT outputs. |
-| Unit and CLI suite | 27/27 tests passed. | Written and executed in the implementation session; no provider-diverse review yet. |
+| Unit and CLI suite | 29/29 tests passed. | Written and executed in the implementation session; no provider-diverse review yet. |
 | Always-allow mutation | Detected by 32 fixture cases. | Broad control; not the only negative control. |
 | Always-reject mutation | Detected by 29 fixture cases, including valid proposals. | Ensures rejection alone cannot pass. |
 | Schema-only mutation | Detected by 19 fixture cases. | Specifically removes contextual binding, scope/graph and reference checks. |
 | Replay guard removed | Detected by the two replay cases. | Protection applies only to one in-memory gate instance. |
 | Task-Spec authorization | Tier 1 HMAC seal; baseline evals failed before implementation, then both evals and Exit Check passed. | A seal is not proof of independent review or correctness. |
-| Offline namespace probe | The same 35 cases passed; user home absent, experiment write denied, scratch write succeeded, external connection failed. | No native model/executor, provider egress, credential mount, process/cancellation or durable recovery proof. |
+| Offline namespace probe | The same 35 cases passed; user home absent, experiment write denied, scratch write succeeded, external connection failed. Network-isolation verdict is INCONCLUSIVE without a matching reachability positive control. | No native model/executor, provider egress, credential mount, process/cancellation or durable recovery proof. |
 
 Machine-readable results: [phase0-results.json](phase0-results.json).
 Fixture digest: `e2d7dc0cccdc1eea3251cead063100120e939226b1525eaf4fb036135cec9711`.
@@ -94,8 +94,8 @@ token counters were not instrumented and are not inferred from tool durations.
 
 | Finding on the reviewed source | Current correction or explicit boundary |
 | --- | --- |
-| B-4 promised graph binding while only allowed IDs/cycles were checked. | Trusted context now binds each task's exact paths, dependencies and evidence; overlapping trusted path owners and invalid/cyclic bindings are rejected. |
-| Replay equivalence was underspecified. | Object keys/whitespace are canonicalized; array order is explicitly significant, with a regression case. |
+| B-4 promised graph binding while only allowed IDs/cycles were checked. | Trusted context now binds each task's exact paths, dependencies and evidence; identical trusted path tokens assigned to multiple owners and invalid/cyclic bindings are rejected. Directory ancestry and filesystem alias disjointness are not established. |
+| Replay equivalence was underspecified. | Parsed JSON values, object keys, insignificant whitespace and equivalent escapes are canonicalized; array order is explicitly significant and Unicode normalization is absent, with regression cases. |
 | Regex end anchors admitted trailing newlines in trusted identifiers/SHA. | Strict end-of-input lookahead and hostile-context regression tests. The coordinator reproduced the original SHA case independently. |
 | Replay check/write was not atomic across threads. | A per-instance lock protects check-and-record; a delayed check test exercises conflicting concurrent submissions. |
 | Test claims were broader than coverage. | Added a duplicate-task case preserving the complete ID set, exact byte boundary, escaped duplicate key, surrogate, set-uniqueness, fixed-route and deep binding/snapshot cases. No claim that every conceivable mutant is killed. |
@@ -123,3 +123,30 @@ The private local runbook records timer identity, exact command, cancellation co
 source manifest and outcomes. This public note contains no private scheduler inventory.
 Registration is not execution; the midnight result remains pending. A failed quota/capacity
 check records a skip instead of silently switching provider or invoking a paid API.
+
+## Immediate Opus revalidation and bounded acceptance conditions
+
+On the owner's request, native Opus (`claude-opus-5-5`) revalidated the complete changed-file
+payload at `6b7c645211373f6b3c64ce78abaa2ff0eea0827b`. Verdict: **CORRECT**. It found no
+accept/reject defect in the core gate for the stated offline threat model, and independently
+derived the 35-case/four-mutant result counts. It did not execute tests or verify the HMAC.
+It required four narrow conditions before offline acceptance:
+
+1. Qualify scope disjointness as string-token disjointness, deferring directory/case aliases.
+2. Make hostile-context path and identifier tests otherwise internally consistent, and
+   independently exercise every lexical pattern with valid and newline-bearing values.
+3. Describe replay using parsed JSON equivalence, including escaped spellings and explicit
+   array-order/Unicode-normalization limits.
+4. Label the network observation INCONCLUSIVE without a matching positive reachability control.
+
+The coordinator implemented those conditions in documentation, tests and probe reporting.
+`gate.py` and its schema remain byte-identical to the independently reviewed core. Additional
+negative-control reproductions weaken path validation and an individual identifier pattern;
+each now causes the targeted test to fail without a test infrastructure error. No second
+implementation executor or further model call is required for those coordinator checks.
+
+Recommended follow-ups remain outside this acceptance claim: deterministic lock-removal
+mutation evidence, automatic comparison of `--check` with a stored report, stricter fixture
+byte/duplicate-key fingerprinting and richer CLI misuse classification. They do not confer
+native-executor readiness. The scheduled midnight call is retained for a distinct Phase 1
+readiness/authority-boundary audit, rather than repeating this code-correction review.

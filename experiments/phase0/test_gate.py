@@ -11,7 +11,8 @@ import time
 import unittest
 from unittest.mock import patch
 
-from gate import InvalidInput, MAX_INPUT_BYTES, ProposalGate, canonical_bytes, digest, load_json
+from gate import InvalidInput, MAX_INPUT_BYTES, ProposalGate, SCHEMA, canonical_bytes, digest, load_json
+from jsonschema import Draft202012Validator
 from run_experiment import ROOT, load_fixtures, run_experiment
 
 
@@ -106,7 +107,9 @@ class ProposalContractTests(unittest.TestCase):
     def test_noncanonical_paths_fail_even_if_trusted_scope_tries_to_admit_them(self):
         for value in ("../file", "/tmp/file", "src/../file", "src//file", "./src/file", ".git/config", "src\\file", "%2e%2e/file", "."):
             with self.subTest(path=value):
-                context = {**self.context, "allowed_paths": [value]}
+                context = deepcopy(self.context)
+                context["allowed_paths"] = [value, "src/ui.js"]
+                context["task_bindings"]["EXP-2048-ENGINE"]["paths"] = [value]
                 with self.assertRaises(InvalidInput):
                     ProposalGate(context)
 
@@ -145,9 +148,43 @@ class ProposalContractTests(unittest.TestCase):
                 ProposalGate(context)
         for field in ("allowed_task_ids", "allowed_dependency_ids", "allowed_evidence_ids", "required_decision_ids"):
             context = deepcopy(self.context)
-            context[field] = ["ID\n"]
+            if field == "allowed_task_ids":
+                context[field] = ["ID\n", "EXP-2048-UI"]
+                context["task_bindings"]["ID\n"] = context["task_bindings"].pop("EXP-2048-ENGINE")
+                context["task_bindings"]["EXP-2048-UI"]["depends_on"] = ["ID\n"]
+            elif field == "allowed_dependency_ids":
+                context[field] = ["ID\n"]
+                context["task_bindings"]["EXP-2048-ENGINE"]["depends_on"] = ["ID\n"]
+            elif field == "allowed_evidence_ids":
+                context[field] = ["ID\n"]
+                for binding in context["task_bindings"].values():
+                    binding["evidence_refs"] = ["ID\n"]
+            else:
+                context[field] = ["ID\n"]
             with self.assertRaises(InvalidInput):
                 ProposalGate(context)
+
+    def test_each_identifier_pattern_independently_rejects_trailing_newline(self):
+        def visit(value):
+            if isinstance(value, dict):
+                if "pattern" in value:
+                    pattern = value["pattern"]
+                    valid = "a" * 64 if "{64}" in pattern else "a" * 40 if "{40}" in pattern else "ID"
+                    validator = Draft202012Validator({"type": "string", "pattern": pattern})
+                    self.assertTrue(validator.is_valid(valid), pattern)
+                    self.assertFalse(validator.is_valid(valid + "\n"), pattern)
+                for item in value.values():
+                    visit(item)
+            elif isinstance(value, list):
+                for item in value:
+                    visit(item)
+        visit(SCHEMA)
+
+    def test_equivalent_json_escape_replay_is_duplicate(self):
+        gate = ProposalGate(self.context)
+        self.assertEqual(gate.submit(canonical_bytes(self.proposal)).code, "RECORDED")
+        escaped = json.dumps(self.proposal).replace("REQUEST", "\\u0052EQUEST")
+        self.assertEqual(gate.submit(escaped).code, "DUPLICATE")
 
     def test_required_bindings_cannot_overlap_or_name_unknown_references(self):
         for field, value in (("paths", ["src/ui.js"]), ("depends_on", ["UNKNOWN"]), ("evidence_refs", ["E-UNKNOWN"])):
