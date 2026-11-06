@@ -161,6 +161,7 @@ units:
       - docs/ensemble/experiment-plan.md
     creates_paths:
       - ensemble_poc/verifier.py
+      - experiments/poc/acceptance/logic_runner.mjs
       - experiments/poc/acceptance/game.test.mjs
       - experiments/poc/acceptance/browser.py
       - experiments/poc/README.md
