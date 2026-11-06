@@ -1,7 +1,7 @@
 ---
 id: T-20261106-poc-boundaries
 title: "Constrain generated artifacts and isolate fixed verifiers"
-status: ready
+status: done
 format_version: 3
 profile: standard
 effort: M
@@ -28,10 +28,14 @@ execution_backend: codex
 signed_off: true
 signed_off_by: thiago
 signed_off_at: 2026-11-06T02:45:47Z
-accepted: false
-accepted_by: (none)
-accepted_at: (none)
+accepted: true
+accepted_by: thiago
+accepted_at: 2026-11-06T12:28:21Z
 signed_off_sig: hmac-sha256-v3:a9566bca:c19e527c1d12363abef9497f74e1ad06b05c6b2c2c74ca36d68e90a3a4193205
+accepted_tier: 1
+accepted_attempt_id: 39262f74-bf97-4ac9-a969-d19039359b35
+accepted_authorization_ref: hmac-sha256-v3:a9566bca:c19e527c1d12363abef9497f74e1ad06b05c6b2c2c74ca36d68e90a3a4193205
+acceptance_record_digest: sha256:cc7932414ce670661b81f583fd5f1dd401773671ba0b11032fa9b54d26fb9801
 ---
 
 # Constrain generated artifacts and isolate fixed verifiers
