@@ -8,7 +8,7 @@ import time
 import uuid
 from collections import deque
 
-from .admission import capacity, check_quota, collect, utcnow
+from .admission import capacity, check_quota, collect, utcnow, quota_limit
 from .containment import bounded, namespace, stop_unit, control_env
 from .contracts import Rejected, parse
 
@@ -167,9 +167,12 @@ class Native:
 
     def __call__(self, provider, prompt, schema):
         cfg = self.config[provider]
-        host = capacity(self.config["runtime_root"], self.config.get("capacity_probe"))
+        limit = quota_limit(self.config)
+        # This adapter never admits an integrating worker: models have no tools,
+        # checkout or write surface. Global observations and host floors still apply.
+        host = capacity(self.config["runtime_root"], self.config.get("capacity_probe"), integrating=False)
         if provider == "claude":
-            quota = collect(cfg["quota_command"])
+            quota = collect(cfg["quota_command"], limit=limit)
             mounts = [
                 (cfg["binary"], "/claude", False),
                 (cfg["auth_file"], "/home/reviewer/.claude/.credentials.json", False),
@@ -259,7 +262,7 @@ class Native:
                             "resets_at": r["resetsAt"],
                         }
                     )
-                quota = check_quota(readings, required=tuple(cfg.get("required_quota_windows", [])))
+                quota = check_quota(readings, required=tuple(cfg.get("required_quota_windows", [])), limit=limit)
                 thread = rpc.call(
                     "thread/start",
                     {
@@ -313,6 +316,8 @@ class Native:
             "auth": "native_subscription",
             "observed_at": utcnow().isoformat(),
             "quota": quota,
+            "quota_limit_percent": limit,
+            "owner_quota_exception": self.config.get("owner_quota_exception"),
             "tools": [],
             "transport_network": "trusted_cli_host_network",
         }

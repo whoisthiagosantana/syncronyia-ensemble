@@ -5,7 +5,7 @@ import json
 from collections import deque
 from unittest.mock import patch
 
-from ensemble_poc.admission import check_quota, utcnow
+from ensemble_poc.admission import check_quota, utcnow, quota_limit, capacity
 from ensemble_poc.contracts import Rejected
 from ensemble_poc.planner import plan, STAGES
 from ensemble_poc.native import CodexRPC, DISABLED, Native
@@ -26,6 +26,36 @@ class NativeTests(unittest.TestCase):
 
     def test_quota_positive(self):
         self.assertEqual(len(check_quota(self.readings())), 2)
+
+    def test_expiring_owner_exception_preserves_freshness_and_backend_ceiling(self):
+        cfg = {
+            "owner_quota_exception": {
+                "authorized_by": "owner",
+                "scope": "functional_poc",
+                "expires_at": (utcnow() + timedelta(hours=1)).isoformat(),
+                "limit_percent": 100,
+            }
+        }
+        self.assertEqual(quota_limit({}), 35)
+        rows = self.readings()
+        rows[0]["percent"] = 70
+        self.assertEqual(len(check_quota(rows, limit=quota_limit(cfg))), 2)
+        rows[0]["percent"] = 100
+        with self.assertRaises(Rejected):
+            check_quota(rows, limit=quota_limit(cfg))
+        cfg["owner_quota_exception"]["expires_at"] = (utcnow() - timedelta(seconds=1)).isoformat()
+        with self.assertRaises(Rejected):
+            quota_limit(cfg)
+
+    def test_full_integrating_slots_do_not_hide_data_only_observation(self):
+        data = {"observed_at": utcnow().isoformat(), "business_hours": True, "live_workers": 2, "worker_limit": 2}
+        response = type("Result", (), {"stdout": json.dumps(data).encode()})()
+        with patch("ensemble_poc.admission.subprocess.run", return_value=response):
+            with self.assertRaisesRegex(Rejected, "GLOBAL_CAPACITY_FULL"):
+                capacity("/tmp", ["probe"])
+            observed = capacity("/tmp", ["probe"], integrating=False)
+        self.assertEqual(observed["live_workers"], 2)
+        self.assertEqual(observed["admission_profile"], "tool_free_data_producer")
 
     def test_quota_negative(self):
         for mutation in [

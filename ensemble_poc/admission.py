@@ -28,7 +28,23 @@ def timestamp(value):
     return result
 
 
-def check_quota(readings, now=None, required=("five_hour", "seven_day")):
+def quota_limit(config):
+    policy = config.get("owner_quota_exception")
+    if policy is None:
+        return 35
+    if (
+        policy.get("scope") != "functional_poc"
+        or policy.get("authorized_by") != "owner"
+        or timestamp(policy["expires_at"]) <= utcnow()
+    ):
+        raise Rejected("QUOTA_EXCEPTION_INVALID_OR_EXPIRED")
+    limit = policy.get("limit_percent")
+    if type(limit) is not int or not 0 < limit <= 100:
+        raise Rejected("QUOTA_EXCEPTION_INVALID")
+    return limit
+
+
+def check_quota(readings, now=None, required=("five_hour", "seven_day"), limit=35):
     now = now or utcnow()
     scopes = {r["scope"]: r for r in readings}
     evidence = []
@@ -41,7 +57,7 @@ def check_quota(readings, now=None, required=("five_hour", "seven_day")):
         percent = r.get("percent")
         if isinstance(percent, bool) or not isinstance(percent, (int, float)) or not math.isfinite(percent):
             raise Rejected("QUOTA_INVALID")
-        if not 0 <= percent < 35:
+        if not 0 <= percent < limit:
             raise Rejected("QUOTA_THRESHOLD")
         age = (now - timestamp(r["observed_at"])).total_seconds()
         if not 0 <= age <= 300 or timestamp(r["resets_at"]) <= now:
@@ -50,17 +66,17 @@ def check_quota(readings, now=None, required=("five_hour", "seven_day")):
     return evidence
 
 
-def collect(command):
+def collect(command, limit=35):
     try:
         r = subprocess.run(command, capture_output=True, timeout=40, check=True)
-        return check_quota(parse(r.stdout)["readings"])
+        return check_quota(parse(r.stdout)["readings"], limit=limit)
     except Rejected:
         raise
     except (OSError, subprocess.SubprocessError, KeyError, ValueError, TypeError):
         raise Rejected("QUOTA_UNAVAILABLE") from None
 
 
-def capacity(root, probe):
+def capacity(root, probe, *, integrating=True):
     now = utcnow()
     mem = dict(line.split(":", 1) for line in Path("/proc/meminfo").read_text().splitlines())
     used = 1 - int(mem["MemAvailable"].split()[0]) / int(mem["MemTotal"].split()[0])
@@ -81,7 +97,9 @@ def capacity(root, probe):
             raise Rejected("CAPACITY_STALE")
         live = data["live_workers"]
         limit = data["worker_limit"]
-        if type(live) is not int or type(limit) is not int or not 0 <= live < limit:
+        if type(live) is not int or type(limit) is not int or live < 0 or limit < 1:
+            raise Rejected("GLOBAL_CAPACITY_INVALID")
+        if integrating and live >= limit:
             raise Rejected("GLOBAL_CAPACITY_FULL")
     except Rejected:
         raise
@@ -93,6 +111,7 @@ def capacity(root, probe):
         "disk_free_fraction": disk.free / disk.total,
         "live_workers": live,
         "worker_limit": limit,
+        "admission_profile": "integrating_worker" if integrating else "tool_free_data_producer",
     }
 
 

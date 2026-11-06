@@ -112,6 +112,8 @@ GAME_CONTRACT = """Generate a dependency-free static 2048 game in exactly index.
 style.css, game.mjs, ui.mjs. Use relative imports and no remote assets, network calls,
 package installers, inline scripts or event-handler attributes. index.html loads ui.mjs.
 game.mjs exports pure functions:
+game.mjs must use only ECMAScript built-ins, without Node or Web globals such as
+structuredClone, console, process or document. UI-only browser APIs belong in ui.mjs.
 move(board, direction) -> {board, score, moved}, directions left/right/up/down;
 spawn(board, rng=Math.random) -> new board, using rng for empty cell then tile value;
 getStatus(board) -> {won, lost}; won means a tile >=2048, lost means no legal moves.
