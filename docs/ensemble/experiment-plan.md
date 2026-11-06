@@ -1,7 +1,10 @@
 # Falsifiable experiment plan
 
-Status: proposed; no phase below has been executed. Date: 2026-11-05.
-The docs-only fork is preparation, not permission to start autonomous workers.
+Status: Phase 0 accepted for its bounded offline scope after independent review conditions
+and Task-Spec Tier 1 acceptance.
+Model-driven Phases 1–3 have not run. Original plan date: 2026-11-05.
+The owner authorized starting this experiment. See [Phase 0 results](reports/phase0.md).
+That authorization does not waive native-execution readiness or acceptance controls.
 
 ## Research question
 

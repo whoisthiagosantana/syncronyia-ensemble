@@ -1,0 +1,43 @@
+{
+  "schema_version": "EnsembleProposal/v1alpha1",
+  "request_id": "REQUEST-2048-001",
+  "work_item_id": "EXP-2048",
+  "repository_sha": "8a48cffb07be584eedfcdf85e6a50526bcf53940",
+  "snapshot_sha256": "8cd1f3227420bbf83ceda220f216936814f8bb5c55a6e966bec0542aed8a42fa",
+  "route": "TASK_SPEC",
+  "engine": "ensemble",
+  "state": "proposed",
+  "tasks": [
+    {
+      "task_id": "EXP-2048-ENGINE",
+      "summary": "Propose deterministic 2048 board logic and merge acceptance cases.",
+      "paths": [
+        "src/engine.js"
+      ],
+      "depends_on": [
+        "BASE-APPROVED"
+      ],
+      "evidence_refs": [
+        "E-REQUIREMENTS",
+        "E-ACCEPTANCE"
+      ]
+    },
+    {
+      "task_id": "EXP-2048-UI",
+      "summary": "Propose keyboard UI using the board engine.",
+      "paths": [
+        "src/ui.js"
+      ],
+      "depends_on": [
+        "EXP-2048-ENGINE"
+      ],
+      "evidence_refs": [
+        "E-REQUIREMENTS"
+      ]
+    }
+  ],
+  "assumptions": [
+    "This synthetic proposal does not authorize implementation."
+  ],
+  "open_decisions": []
+}

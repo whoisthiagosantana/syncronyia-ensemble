@@ -2,8 +2,11 @@
 
 **Experimental MetaGPT fork for governed AI software delivery.**
 
-Status: **research / documentation only**. Native Claude Code/Codex execution, MCP tools,
-Task-Spec integration and governed orchestration are **proposed, not implemented**.
+Status: **research / offline Phase 0 accepted**. A synthetic proposal gate and its local
+tests exist in [experiments/phase0](experiments/phase0/README.md). The external coordinator
+accepted this bounded offline phase at Task-Spec Tier 1 after independent Opus review
+conditions were resolved; this does not certify native execution. Native Claude Code/Codex execution, MCP tools and governed orchestration remain
+**proposed, not implemented**.
 The Python runtime and dependencies remain upstream MetaGPT at
 [`11cdf466`](https://github.com/FoundationAgents/MetaGPT/tree/11cdf466d042aece04fc6cfd13b28e1a70341b1f).
 Running the upstream company can invoke executable tools and API-backed models.
@@ -30,8 +33,9 @@ Internal role messages and completion fields do not authorize work or certify de
 | [Astra advisory](docs/ensemble/reviews/2026-11-05-astra-advisory.md) | Reviewed recommendations, corrections and evidence limits. |
 | [Upstream provenance](docs/ensemble/upstream.md) | Baseline, license, fork scope, validation and rollback. |
 
-The pilot has not run. No productivity, security, native-auth or MCP readiness claim is
-made. Subscription execution still consumes tokens and plan quota. Provider login stays
+The offline fixture experiment has run; the model-driven pilot has not. See the
+[Phase 0 report](docs/ensemble/reports/phase0.md) for measured results and remaining gates.
+No productivity, native-auth or MCP readiness claim is made. Subscription execution still consumes tokens and plan quota. Provider login stays
 inside official executors; this fork does not provide a shared subscription API.
 
 ## What exists today
@@ -39,6 +43,7 @@ inside official executors; this fork does not provide a shared subscription API.
 - A named GitHub fork with upstream history, license and runtime code preserved.
 - A source-backed assessment and reviewed composition proposal.
 - A bounded experiment design that can fail without migrating company state.
+- An offline proposal validator with synthetic cases, targeted mutations and local results.
 
 No factory is installed or adopted by creating this repository. GitHub Actions is disabled
 for the initial research stage. Runtime tool restrictions and admission remain design

@@ -1,0 +1,48 @@
+{
+  "request_id": "REQUEST-2048-001",
+  "work_item_id": "EXP-2048",
+  "repository_sha": "8a48cffb07be584eedfcdf85e6a50526bcf53940",
+  "route": "TASK_SPEC",
+  "engine": "ensemble",
+  "allowed_task_ids": [
+    "EXP-2048-ENGINE",
+    "EXP-2048-UI"
+  ],
+  "allowed_paths": [
+    "src/engine.js",
+    "src/ui.js"
+  ],
+  "allowed_dependency_ids": [
+    "BASE-APPROVED"
+  ],
+  "allowed_evidence_ids": [
+    "E-REQUIREMENTS",
+    "E-ACCEPTANCE"
+  ],
+  "required_decision_ids": [],
+  "task_bindings": {
+    "EXP-2048-ENGINE": {
+      "paths": [
+        "src/engine.js"
+      ],
+      "depends_on": [
+        "BASE-APPROVED"
+      ],
+      "evidence_refs": [
+        "E-REQUIREMENTS",
+        "E-ACCEPTANCE"
+      ]
+    },
+    "EXP-2048-UI": {
+      "paths": [
+        "src/ui.js"
+      ],
+      "depends_on": [
+        "EXP-2048-ENGINE"
+      ],
+      "evidence_refs": [
+        "E-REQUIREMENTS"
+      ]
+    }
+  }
+}
