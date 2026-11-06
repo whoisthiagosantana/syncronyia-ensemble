@@ -1,7 +1,7 @@
 ---
 id: T-20261106-poc-coordinator
 title: "Persist and expose governed attempts through a local MCP facade"
-status: ready
+status: done
 format_version: 3
 profile: standard
 effort: M
@@ -28,10 +28,14 @@ execution_backend: codex
 signed_off: true
 signed_off_by: thiago
 signed_off_at: 2026-11-06T02:45:49Z
-accepted: false
-accepted_by: (none)
-accepted_at: (none)
+accepted: true
+accepted_by: thiago
+accepted_at: 2026-11-06T12:31:13Z
 signed_off_sig: hmac-sha256-v3:a9566bca:bd226e081ca87e6cc2e831d5bf7598478f55b898b41c6545acdb2427ec8200d3
+accepted_tier: 1
+accepted_attempt_id: acc6b9e6-3570-481b-885a-01cc768a0acb
+accepted_authorization_ref: hmac-sha256-v3:a9566bca:bd226e081ca87e6cc2e831d5bf7598478f55b898b41c6545acdb2427ec8200d3
+acceptance_record_digest: sha256:c35ddf8a18d66baa3aac355be2a81f5c0f21d0364eec9c7ae5863a6643ae1bce
 ---
 
 # Persist and expose governed attempts through a local MCP facade
